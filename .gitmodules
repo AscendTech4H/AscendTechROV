@@ -1,0 +1,3 @@
+[submodule "platformioproject/lib/TLC5940"]
+	path = platformioproject/lib/TLC5940
+	url = https://github.com/mcous/TLC5940.git
