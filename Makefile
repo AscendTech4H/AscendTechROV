@@ -32,6 +32,6 @@ fetchplatformio:
 	if [ ! -d bin/pip/platformio ]; then pip install platformio -t bin/pip; fi
 
 setupplatformio: fetchplatformio
-	bash platformioproject/setup
+	bash -c "cd bottomsidecode;./platformio platforms install atmelavr"
 
 setup: fetchsysdepends setuplua setupplatformio
