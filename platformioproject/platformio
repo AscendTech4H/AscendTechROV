@@ -1,0 +1,2 @@
+export PYTHONPATH=../bin/pip
+python ../bin/pip/platformio/__main__.py $@
