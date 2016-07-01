@@ -1,0 +1,5 @@
+Usage:
+	genardumake NAME BOARD [LIB1] [LIB2] . . .
+
+Example:
+	genardumake example -b Uno -l SoftwareSerial Wire
