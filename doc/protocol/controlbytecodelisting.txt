@@ -1,0 +1,15 @@
+The bytecode first has a 4-bit instruction field.
+Then it can have up to 3 arguments: a, b, and c.
+For a and b, lowercase means it is 4 bit, and uppercase means it is 8-bit.
+The total size of the a and b arguments must be 8 or 16 bits.
+The C argument varies in size.
+
+Num	Name	Args	Description
+
+0	MOTOR	aB	Sets motor with ID a to speed B. B is a signed number for bidirectional motors, and unsigned for unidirectional motors.
+1	SERVO	aB	Sets servo with ID a to position B.
+2	SENSOR	a	Refreshes a sensor with ID a.
+3	READRQ	Ab	Puts a read request for resource with ID A in read slot b.
+4	READ	a	Starts a read for slots 0 thru a. Interrupt states at beginning.
+5	SSTATE	Ab	Puts device with ID A in state b.
+6	DCONF	AbC	Sets setting b on device with ID A. Setting is set to C, which may be 8, 16, or 32-bit depending on the setting.
