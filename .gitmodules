@@ -1,3 +1,0 @@
-[submodule "bottomsidecode/lib/TLC5940"]
-	path = bottomsidecode/lib/TLC5940
-	url = https://github.com/mcous/TLC5940.git
