@@ -11,7 +11,7 @@ before_install:
 install:
   - arduino --install-library "Tlc5940,OneWire"
 script:
-  - arduino --verify --board arduino:avr:uno $PWD/BottomSide/BottomSide.ino
+  - arduino --verify --board arduino:avr:mega:cpu=atmega2560 $PWD/BottomSide/BottomSide.ino
   - arduino --verify --board arduino:avr:uno $PWD/TopSide/TopSide.ino
 notifications:
   email:
