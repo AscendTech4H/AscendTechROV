@@ -15,7 +15,7 @@ void readVals(){
   uint8_t s=Comm.read();
   while(Comm.available()<s){} //Wait for it to come
   int i;
-  for(i=0,i<sizeof(sensors),i++){
+  for(i=0;i<s;i++){
     Serial.write((uint8_t)Comm.read()); //Pass it all right on through
   }
   digitalWrite(rsc,HIGH); //Switch back to sending mode
@@ -46,14 +46,6 @@ void setCamera(int camera){ // turn off all cameras except for the one requested
       digitalWrite(pin, HIGH);
     }
   }
-}
-
-void updateBMP(){
-  Comm.write(5);
-}
-
-void updateExternalTempSensor(){
-  Comm.write(6);
 }
 
 void setup(){
