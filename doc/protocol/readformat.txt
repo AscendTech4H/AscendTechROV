@@ -1,5 +1,0 @@
-For each read device, there is this format:
-	Unsigned 8-bit size value
-	Data
-
-For RS-485 direction changes, the side that requested the change should wait 10ms, and the other side should wait 20ms.
