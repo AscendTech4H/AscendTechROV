@@ -3,7 +3,7 @@ installstuff () {
 		echo "deb http://llvm.org/apt/jessie/     llvm-toolchain-jessie-3.8 main" >  /etc/apt/sources.list.d/llvm.list
 	fi
 	apt-get update
-	apt-get install arduino arduino-mk llvm-3.8
+	apt-get install arduino llvm-3.8
 	RAVILOC=$(mktemp -d)
 	echo "Making ravi .deb package. . . "
 	curl https://github.com/dibyendumajumdar/ravi/releases/download/0.15.1/ravi-ubuntu15-x64-llvm38.tar.gz | tar -xvf - ravi-ubuntu15-x64-llvm38/bin/ ravi-ubuntu15-x64-llvm38/lib/ -C $RAVILOC
