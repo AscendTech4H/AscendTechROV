@@ -1,24 +1,30 @@
 require "serial.lua"
 
-function updateMotor(motor,value)
+
+function updateMotor(motor: interger,value: number)
 	sendByte(0)
 	sendByte(motor)
-	sendByte(value)
+	sendByte(127-(value*127))
+end
+
+function updateSensor(sensor: interger)
+	sendByte(1)
+	sendByte(sensor)
 end
 
 function updateTlc()
-	sendByte(1)
+	updateSensor(0)
 end
 
 function mpuRead()
-	sendByte(2)
+	updateSensor(1)
 end
 
 function sendData()
-	sendByte(3)
+	sendByte(2)
 end
 
-function updateServo(servo,value)
+function updateServo(servo: interger,value: interger)
 	sendByte(4)
 	sendByte(servo)
 	sendByte(value)
