@@ -6,6 +6,6 @@ import (
 	"image"
 )
 
-func getImage() image.Image {
+func GetImage() image.Image {
 	return img
 }
