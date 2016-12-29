@@ -21,6 +21,8 @@ func init() {
 	failutil.CrashIfErr(err)	//Crash if error
 }
 
-func crc(dat []byte) (out []byte){
+func crc(dat []byte) (out []byte) {
+	out = make(byte,2)
 	binary.LittleEdian.PutUint16(out,crc16.Checksum(dat,crc16.makeTable(0x4599)))
 }
+
