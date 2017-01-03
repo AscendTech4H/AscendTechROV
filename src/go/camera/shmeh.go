@@ -2,8 +2,8 @@ package camera
 
 import (
 	"github.com/blackjack/webcam"
-	"log"
 	"image"
+	"log"
 )
 
 func GetImage() image.Image {
