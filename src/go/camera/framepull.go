@@ -23,9 +23,10 @@ func frameLoop() { //Loop that loads frames into img
 			f.Pix[(p*4)+1] = fr[(p*3)+1]
 			f.Pix[(p*4)+2] = fr[(p*3)+2]
 			f.Pix[(p*4)+3] = 0
+			p++
 		}
 
 		//Switch to new frame
-		img = f
+		pichans <- f
 	}
 }
