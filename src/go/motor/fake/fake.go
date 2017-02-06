@@ -1,7 +1,7 @@
 package fake
 import (
 	"../../motor"
-	"fmt"
+	"log"
 )
 
 type fakemotor struct{
@@ -12,7 +12,7 @@ type fakemotor struct{
 
 func (f *fakemotor) Set(s uint8) {
 	f.state=s
-	fmt.Printf("Set motor %s to %u.\n",f.name,s)
+	log.Printf("Set motor %s to %d.\n",f.name,s)
 }
 
 func (f *fakemotor) State() uint8 {
