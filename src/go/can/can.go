@@ -16,8 +16,3 @@ func init() {
 	err = unix.Bind(f, &SockaddrCAN{Ifindex: 0})     //Bind it to all CAN interfaces
 	panic(err)                                       //Crash if error
 }
-
-func crc(dat []byte) (out []byte) {
-	out = make(byte, 2)
-	binary.LittleEdian.PutUint16(out, crc16.Checksum(dat, crc16.makeTable(0x4599)))
-}
