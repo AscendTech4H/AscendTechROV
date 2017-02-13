@@ -15,7 +15,7 @@ install:
   - arduino --install-library "Tlc5940"
 script:
   - arduino --verify --board arduino:avr:mega:cpu=atmega2560 $PWD/Arduino/BottomSide/BottomSide.ino
-  - go build go/camera go/can go/controller go/motor go/shmeh
+  - cd go && go build
 notifications:
   email:
     on_success: change
