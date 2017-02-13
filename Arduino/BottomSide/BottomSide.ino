@@ -2,9 +2,7 @@
 
 #include <Tlc5940.h>
 
-Servo serv0;
-Servo serv1;
-Servo serv2;
+Servo servo;
 
 void setup() {
   //DEBUG SETUP
@@ -18,9 +16,7 @@ void setup() {
   Tlc.init();
   Tlc.update();
   //SERVO SETUP
-  serv0.attach(5);
-  serv1.attach(6);
-  serv2.attach(7);
+  serv0.attach(23);
   
   Serial.println("Initialization Complete");
 }
@@ -58,8 +54,6 @@ void servoSet(){
   Serial.println(servValue);
   switch (servIndex){
     case 0: serv0.write(servValue); break;
-    case 1: serv1.write(servValue); break;
-    case 2: serv2.write(servValue); break;
   }
 }
 
