@@ -1,10 +1,10 @@
 package thingy
 
 import (
-	"./camera"
-	"./can"
-	"./controller"
-	"./demo"
-	"./motor"
-	"./shmeh"
+	_ "./camera"
+	_ "./can"
+	_ "./controller"
+	_ "./demo"
+	_ "./motor"
+	_ "./shmeh"
 )
