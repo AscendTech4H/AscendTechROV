@@ -1,3 +1,4 @@
+//code for testing cameras
 package camera
 
 import (

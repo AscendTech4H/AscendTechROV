@@ -1,3 +1,4 @@
+//motor interface
 package motor
 
 type MotorType uint8
