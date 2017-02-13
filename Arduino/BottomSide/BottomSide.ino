@@ -2,7 +2,7 @@
 
 #include <Tlc5940.h>
 
-Servo servo;
+Servo serv0;
 
 void setup() {
   //DEBUG SETUP
