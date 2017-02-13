@@ -1,4 +1,8 @@
 language: c
+addons:
+  apt:
+    packages:
+    - golang
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
   - sleep 3
@@ -11,6 +15,7 @@ install:
   - arduino --install-library "Tlc5940"
 script:
   - arduino --verify --board arduino:avr:mega:cpu=atmega2560 $PWD/Arduino/BottomSide/BottomSide.ino
+  - go build go/camera go/can go/controller go/motor go/shmeh
 notifications:
   email:
     on_success: change
