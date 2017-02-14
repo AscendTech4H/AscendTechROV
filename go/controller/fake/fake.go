@@ -35,12 +35,15 @@ func (f *fakejoystick) Set(x uint8, y uint8){
 	log.Printf("Set joystick %s to x: %d y: %d.\n",f.name,x,y)
 }
 
+// NewFakeButton creates a fake buttton with name name and initial state istate
 func NewFakeButton(name string, istate uint8) controller.Button {
 	m := new(fakebutton)
 	m.name=name
 	m.state=istate
 	return m
 }
+
+// NewFakeJoystick creates a fake joystick with name name, and initial position (istatex,istatey)
 func NewFakeJoystick(name string, istatex uint8,istatey uint8) controller.Joystick {
 	m := new(fakejoystick)
 	m.name=name
@@ -48,6 +51,8 @@ func NewFakeJoystick(name string, istatex uint8,istatey uint8) controller.Joysti
 	m.statey=istatey
 	return m
 }
+
+// NewFakeController creates a fake controller with the provided name and buttons
 func NewFakeController(name string, buttons map[string]controller.Button) controller.Controller {
 	m := new(fakecontroller)
 	m.name=name
