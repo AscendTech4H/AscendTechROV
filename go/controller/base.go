@@ -1,6 +1,5 @@
-//controller interface for pilot/copilot
+// Controller interface for robot
 package controller
-
 
 
 type Controller interface {
