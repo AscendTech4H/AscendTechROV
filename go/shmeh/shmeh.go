@@ -1,4 +1,4 @@
-//debugging code
+// Random utility code
 package shmeh
 
 // UhOh throws error if there is error
