@@ -12,7 +12,7 @@ type fakemotor struct{
 
 func (f *fakemotor) Set(s uint8) {
 	f.state=s
-	log.Printf("Set motor %s to %d.\n",f.name,s)
+	log.Printf("Set %s motor %s to %d.\n",f.t.TypeName(),f.name,s)
 }
 
 func (f *fakemotor) State() uint8 {
@@ -23,6 +23,7 @@ func (f *fakemotor) GetMotorType() motor.MotorType {
 	return f.t
 }
 
+// NewFake creates a new fake motor
 func NewFake(name string, t motor.MotorType, istate uint8) motor.Motor {
 	m := new(fakemotor)
 	m.name=name
