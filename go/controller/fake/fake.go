@@ -1,3 +1,4 @@
+// Package for implementing fake controllers for testing purposes
 package fake
 
 import (
