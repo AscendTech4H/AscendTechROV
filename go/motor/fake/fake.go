@@ -1,3 +1,4 @@
+//Package for implementing fake motors for testing purposes
 package fake
 import (
 	"../../motor"
