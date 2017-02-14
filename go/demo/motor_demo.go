@@ -17,6 +17,6 @@ func main() {
 	m.Set(255)
 
 	//Print info
-	log.Println("Motor type: "+string(motor.TypeName(m.GetMotorType())))
+	log.Println("Motor type: "+m.GetMotorType().TypeName())
 	log.Printf("Motor speed: %d\n",m.State())
 }
