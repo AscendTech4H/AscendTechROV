@@ -16,17 +16,17 @@ type fakejoystick struct{
 }
 type fakebutton struct{
 	name string
-	state uint8
+	state bool
 }
 
-func (f *fakebutton) State() uint8 {
+func (f *fakebutton) State() bool {
 	return f.state
 }
 func (f *fakejoystick) State() (uint8, uint8) {
 	return f.statex, f.statey
 }
 
-func (f *fakebutton) Set(s uint8){
+func (f *fakebutton) Set(s bool){
 	f.state=s
 	log.Printf("Set button %s to %d.\n",f.name,s)
 }
