@@ -15,7 +15,7 @@ install:
   - arduino --install-library "Tlc5940"
   - export GOPATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace:$GOPATH"
   - export PATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace/bin:$PATH"
-  - go get github.com/blackjack/webcam github.com/howeyc/crc16 golang.org/x/sys/unix
+  - go get github.com/brutella/can
 script:
   - arduino --verify --board arduino:avr:mega:cpu=atmega2560 $PWD/Arduino/BottomSide/BottomSide.ino
   - cd go && go build
