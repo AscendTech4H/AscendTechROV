@@ -1,4 +1,4 @@
-package thingy
+package AscendTechROV
 
 import (
 	_ "./camera"
