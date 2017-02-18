@@ -1,4 +1,4 @@
-package thingy
+package builder
 
 import (
 	_ "./camera"
