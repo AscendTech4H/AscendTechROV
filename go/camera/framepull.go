@@ -2,10 +2,10 @@ package camera
 
 import (
 	//"github.com/blackjack/webcam"
-	"log"
-	"image"
 	"../shmeh"
-//	"fmt"
+	"image"
+	"log"
+	//	"fmt"
 )
 
 func frameLoop() { //Loop that loads frames into img
@@ -18,14 +18,14 @@ func frameLoop() { //Loop that loads frames into img
 		f := image.NewRGBA(image.Rect(0, 0, 640, 480))
 		//log.Println(fr)
 		log.Println("out")
-		log.Println(len(f.Pix)/4,len(fr)/3)
+		log.Println(len(f.Pix)/4, len(fr)/3)
 
 		//Add alpha channel (RGB -> RGBA)
 		p := 0
 		pm := 640 * 480
 		for p < pm {
-//			log.Println((p*4)+3,len(f.Pix))
-//			log.Println((p*3)+2,len(fr))
+			//			log.Println((p*4)+3,len(f.Pix))
+			//			log.Println((p*3)+2,len(fr))
 			f.Pix[p*4] = fr[p*3]
 			f.Pix[(p*4)+1] = fr[(p*3)+1]
 			f.Pix[(p*4)+2] = fr[(p*3)+2]

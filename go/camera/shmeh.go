@@ -1,9 +1,9 @@
 package camera
 
 import (
-//	"github.com/blackjack/webcam"
+	//	"github.com/blackjack/webcam"
 	"image"
-//	"log"
+	//	"log"
 )
 
 var pichans chan image.Image

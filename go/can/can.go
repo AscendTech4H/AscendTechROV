@@ -2,9 +2,9 @@
 package can
 
 import (
-   "github.com/brutella/can"
-
+	"github.com/brutella/can"
 )
+
 func init() {
 	bus, _ := can.NewBusForInterfaceWithName("can0")
 	bus.ConnectAndPublish()

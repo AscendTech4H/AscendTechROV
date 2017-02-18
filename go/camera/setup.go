@@ -13,12 +13,12 @@ var sc chan bool
 
 func SetupCam(c string) {
 	pichans = make(chan image.Image)
-        pichanr = make(chan chan image.Image)
-        fchan = make(chan func())
+	pichanr = make(chan chan image.Image)
+	fchan = make(chan func())
 	sc = make(chan bool)
 	log.Println("Opening camera " + c)
 	kam, err := webcam.Open(c)
-	if err!=nil {
+	if err != nil {
 		panic(err)
 	}
 	cam = kam
@@ -26,10 +26,10 @@ func SetupCam(c string) {
 	var h, w uint32 = 640, 480      //Image size
 	_, _, _, err = cam.SetImageFormat(pfmt, h, w)
 	log.Println(cam.GetSupportedFormats())
-	if err!=nil {
+	if err != nil {
 		panic(err)
 	}
-	if err = cam.StartStreaming(); err!=nil {
+	if err = cam.StartStreaming(); err != nil {
 		panic(err)
 	}
 	go picloop()
