@@ -3,7 +3,7 @@
 #include <Tlc5940.h>
 
 Servo serv0;
-
+const int laser = 4;
 void setup() {
   //DEBUG SETUP
   Serial.begin(115200);
@@ -12,6 +12,10 @@ void setup() {
   Serial3.begin(19200);
   pinMode(16,OUTPUT);
   digitalWrite(16,LOW);
+
+  pinMode(laser, OUTPUT);
+  digitalWrite(laser, LOW);
+  
   //TLC SETUP
   Tlc.init();
   Tlc.update();
@@ -44,6 +48,15 @@ void processMotor(){
   Tlc.set(motor+1,b);
 }
 
+void shineLaser() {
+  
+  while(Serial3.available()<2);
+  byte shine = Serial3.read();
+
+  switch(shine) {
+    case 6: digitalWrite(laser, HIGH);
+  }  
+}
 void servoSet(){
   Serial.print("Set servo ");
   while(Serial3.available()<2);
@@ -60,10 +73,10 @@ void servoSet(){
 void tetherProcess(){
   Serial.println("Processing Command");
   //Serial.println(Serial3.read());
-  switch(Serial3.read()){ //PROCESS COMMAND
-    case 0: processMotor();break;                               //TLC INPUT
-    case 1: Serial.println("TLC Update");Tlc.update();break;    //TLC UPDATE
-    case 4: servoSet();break;                                   //SET SERVO INPUTS
+  switch(Serial3.read()){		//PROCESS COMMAND
+    case 0: processMotor();break;				//TLC INPUT
+    case 1: Serial.println("TLCUpdate");Tlc.update();break;	//TLC UPDATE
+    case 4: servoSet();break;					//SET SERVO INPUTS
   }
 }
 
