@@ -8,7 +8,6 @@ import (
 	"math/rand"
 )
 
-
 //CAN bus
 type CAN struct {
 	MessageChan chan Message //Read messages from this
