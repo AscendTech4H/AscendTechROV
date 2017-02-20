@@ -5,5 +5,5 @@ import (
 	_ "./controller"
 	_ "./demo"
 	_ "./motor"
-	_ "./shmeh"
+	_ "./util"
 )
