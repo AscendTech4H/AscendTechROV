@@ -1,5 +1,5 @@
 // Random utility code
-package shmeh
+package util
 
 // UhOh throws error if there is error
 func UhOh(err error) {
