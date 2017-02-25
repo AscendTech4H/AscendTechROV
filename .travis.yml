@@ -15,7 +15,7 @@ install:
   - arduino --install-library "Tlc5940"
   - export GOPATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace:$GOPATH"
   - export PATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace/bin:$PATH"
-  - go get github.com/brutella/can
+  - go get github.com/brutella/can github.com/yuntan/go-v4l2/capture
 script:
   - arduino --verify --board arduino:avr:mega:cpu=atmega2560 $PWD/Arduino/BottomSide/BottomSide.ino
   - cd go && go build
