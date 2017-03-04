@@ -3,13 +3,16 @@
 #include <FlexCAN.h>
 
 Servo grab;
-Metro sysTimer = Metro(1);// milliseconds
+Metro sysTimer = Metro(1);
 
 int laser = 4, valve = 5;
 int clawStuff [2] = {12, 13}; //valve + servo for grabbing
 
 FlexCAN CANbus(125000); //change baud rate later
 static CAN_message_t msg,rxmsg;
+static byte input [8];
+
+int txCount;
 unsigned int txTimer,rxTimer;
 
 void setup() {
@@ -25,20 +28,36 @@ void setup() {
   grab.attach(23); //revise pin number later
 }
 
-typedef struct{
-  byte msg [8];
-} message;
-
 void getMessage(void) {  
-  message rx = {CANbus.read(rxmsg)};
+  if (!rxTimer) {
+    while (CANbus.read(rxmsg)) {
+      for (int i = 0; i < 8; i++) {
+        input[i] = rxmsg.buf[i];
+      } 
+    }
+    
+  }
 }
-byte sendMessage(void) {
-  message txmsg;
-  return 0;
+void sendMessage(byte input [8]) {
+  if (!txTimer) {
+    txTimer = 100;
+    msg.len = 8;
+    msg.id = 0x222; //replace with random 
+
+    for (int i = 0; i < 8; i++) {
+      msg.buf[i] = input[i]; //input data
+    }
+
+    txCount = 6;
+    while (txCount-- ) {
+      CANbus.write(msg);
+      msg.buf[0]++;
+    }
+  }
 }
 
 
-void claw(int motor, int value) {
+void claw(int motor, int value) { //closed = 180, open = 90
     analogWrite(clawStuff[motor], value);    
 }
 
@@ -63,11 +82,11 @@ void shineLaser() {
   digitalWrite(laser, HIGH);
 }
 void servoSet(){
-//  byte servIndex = getMessage();
-//  byte servValue = map(servIndex, 0, 255, 0, 180);
-//  switch (servIndex){
-//    case 0: grab.write(servValue); break;
-//  }
+ byte servIndex = rxmsg.buf[0];
+ byte servValue = map(servIndex, 0, 255, 0, 180);
+  switch (servIndex){
+    case 0: grab.write(servValue); break;
+  }
 }
 
 void tetherProcess(){
