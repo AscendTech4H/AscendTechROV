@@ -1,0 +1,81 @@
+<html>
+	<head>
+		<title>Robot Control</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="virtualjoystick.js"></script>
+		<style>
+			#container {
+				height		: 90%;
+				overflow	: hidden;
+				padding		: 0;
+				margin		: 0;
+				-webkit-user-select	: none;
+				-moz-user-select	: none;
+				background-color:gray;;
+				position:static;
+			}
+			#total {
+				width		: 100%;
+				height		: 100%;
+				overflow	: hidden;
+				padding		: 0;
+				margin		: 0;
+				-webkit-user-select	: none;
+				-moz-user-select	: none;
+			}
+			#buttons {
+				width		: 50%;
+				height		: 100%;
+				overflow	: hidden;
+				padding		: 0;
+				margin		: 0;
+				-webkit-user-select	: none;
+				-moz-user-select	: none;
+				}
+			body{height:100%}
+		</style>
+</head>
+<body>
+	<span style="height:10%; font-size:200%;"><b>AscendTech Robot Control</b></span>
+	<div class="row">
+	<div class="col s6">
+			<p>Claw</p>
+			<button class="waves-effect waves-light btn" onclick = "buttonclick('C');">Open</button>
+			<button class="waves-effect waves-light btn" onclick = "buttonclick('c');">Close</button>
+			<p>Agar</p>
+			<button class="waves-effect waves-light btn" onclick = "buttonclick('A');">On?</button>
+			<button class="waves-effect waves-light btn" onclick = "buttonclick('a');">Off?</button>
+			<p>Laser</p>
+			<button class="waves-effect waves-light btn" onclick = "buttonclick('L');">On</button>
+			<button class="waves-effect waves-light btn" onclick = "buttonclick('l');">Off</button>
+			
+			<span id="result"></span>
+			<form action="#"><p class="range-field">
+				<input type="range" id="slider" min="-50"max="50" />
+			</p></form>
+			
+	</div>
+		<div class="col s6" id="container">	</div>
+	</div>
+	<script>
+		x = new WebSocket("ws:/localhost:8080/websock")
+		function buttonclick(txt) { x.send(txt) }
+	</script>
+	<script>
+		var joystick = new VirtualJoystick({
+			container	: document.getElementById('container'),
+			mouseSupport	: true,
+			limitStickTravel: true,
+			stickRadius	: 50
+		});
+		var slider = document.getElementById('slider');
+		setInterval(function(){
+			buttonclick('X'+joystick.deltaX());
+			buttonclick('Y'+joystick.deltaY());
+			buttonclick('S'+slider.value);
+		}, 500);
+	</script>
+</body>
+</html>
