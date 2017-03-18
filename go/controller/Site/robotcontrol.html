@@ -58,6 +58,8 @@
     height: 200px;
     padding: 0 5px;"/>
 			</p></form>
+			<div id="Outputxy"> X:0 Y:0 </div>
+			<div id="Outputz"> Z: 0</div>
 			
 	</div>
 		<div class="col s6" id="container">	</div>
@@ -74,12 +76,16 @@
 			stickRadius	: 50
 		});
 		var slider = document.getElementById('slider');
+		var outputxyText = document.getElementById('Outputxy');
+		var outputzText = document.getElementById('Outputz');
 		setInterval(function(){
 			if (joystick._pressed){
 				buttonclick('X'+Math.round(joystick.deltaX()));
-				buttonclick('Y'+Math.round(-joystick.deltaY()));
+				buttonclick('Y'+Math.round(joystick.deltaY()));
+	outputxyText.innerHTML = "X: " + Math.round(joystick.deltaX()) + "Y: " + Math.round(-1*joystick.deltaY());
 			}
 			buttonclick('S'+Math.round(slider.value));
+			outputzText.innerHTML = "Z: " + slider.value;
 		}, 500);
 	</script>
 </body>
