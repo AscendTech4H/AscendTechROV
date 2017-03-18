@@ -9,7 +9,7 @@ import (
 
 type robot struct {
 	claw, agar, laser bool
-	movex,movey,turn int
+	forward,up,turn int
 }
 var r robot
 func main() {
@@ -40,11 +40,11 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 		} else if (m[0]==[]byte("l")[0]){
 			r.laser = false
 		} else if (m[0]==[]byte("X")[0]){
-			r.movex,_ = strconv.Atoi(string(m[1:]))
-		} else if (m[0]==[]byte("Y")[0]){
-			r.movey,_ = strconv.Atoi(string(m[1:]))
-		} else if (m[0]==[]byte("S")[0]){
 			r.turn,_ = strconv.Atoi(string(m[1:]))
+		} else if (m[0]==[]byte("Y")[0]){
+			r.forward,_ = strconv.Atoi(string(m[1:]))
+		} else if (m[0]==[]byte("S")[0]){
+			r.up,_ = strconv.Atoi(string(m[1:]))
 		}
 		fmt.Println("CLAW:")
 		fmt.Println(r.claw)
@@ -52,11 +52,11 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 		fmt.Println(r.agar)
 		fmt.Println("LASER:")
 		fmt.Println(r.laser)
-		fmt.Println("X:")
-		fmt.Println(r.movex)
-		fmt.Println("X:")
-		fmt.Println(r.movey)
-		fmt.Println("Turn:")
+		fmt.Println("FWD:")
+		fmt.Println(r.forward)
+		fmt.Println("UP:")
+		fmt.Println(r.up)
+		fmt.Println("TURN:")
 		fmt.Println(r.turn)
 		//now send these to the robot!
 	}
