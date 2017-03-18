@@ -72,8 +72,10 @@
 		});
 		var slider = document.getElementById('slider');
 		setInterval(function(){
-			buttonclick('X'+Math.round(joystick.deltaX()));
-			buttonclick('Y'+Math.round(joystick.deltaY()));
+			if (joystick._pressed){
+				buttonclick('X'+Math.round(joystick.deltaX()));
+				buttonclick('Y'+Math.round(joystick.deltaY()));
+			}
 			buttonclick('S'+Math.round(slider.value));
 		}, 500);
 	</script>
