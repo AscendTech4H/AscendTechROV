@@ -72,9 +72,9 @@
 		});
 		var slider = document.getElementById('slider');
 		setInterval(function(){
-			buttonclick('X'+joystick.deltaX());
-			buttonclick('Y'+joystick.deltaY());
-			buttonclick('S'+slider.value);
+			buttonclick('X'+Math.round(joystick.deltaX()));
+			buttonclick('Y'+Math.round(joystick.deltaY()));
+			buttonclick('S'+Math.round(slider.value));
 		}, 500);
 	</script>
 </body>
