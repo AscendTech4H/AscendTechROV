@@ -1,4 +1,4 @@
-// Random utility code
+//Package util contains assorted utility code
 package util
 
 // UhOh throws error if there is error

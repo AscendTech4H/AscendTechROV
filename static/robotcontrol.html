@@ -1,10 +1,10 @@
 <html>
 	<head>
 		<title>Robot Control</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script src="virtualjoystick.js"></script>
+		<link rel="stylesheet" href="static/materialize.css">
+		<script src="static/materialize.js"></script>
+		<script src="static/jquery.js"></script>
+		<script src="static/virtualjoystick.js"></script>
 		<style>
 			#container {
 				height		: 90%;
@@ -50,7 +50,7 @@
 			<p>Laser</p>
 			<button class="waves-effect waves-light btn" onclick = "buttonclick('L');">On</button>
 			<button class="waves-effect waves-light btn" onclick = "buttonclick('l');">Off</button>
-			
+
 			<span id="result"></span>
 			<form action="#"><p class="range-field">
 				<input type="range" id="slider" min="-50"max="50" style = "-webkit-appearance: slider-vertical; /* WebKit */
@@ -60,12 +60,12 @@
 			</p></form>
 			<div id="Outputxy"> X:0 Y:0 </div>
 			<div id="Outputz"> Z: 0</div>
-			
+
 	</div>
 		<div class="col s6" id="container">	</div>
 	</div>
 	<script>
-		x = new WebSocket("ws:/localhost:8080/websock")
+		x = new WebSocket("ws://"+location.host+"/websock")
 		function buttonclick(txt) { x.send(txt) }
 	</script>
 	<script>
@@ -82,7 +82,7 @@
 			if (joystick._pressed){
 				buttonclick('X'+Math.round(joystick.deltaX()));
 				buttonclick('Y'+Math.round(joystick.deltaY()));
-	outputxyText.innerHTML = "X: " + Math.round(joystick.deltaX()) + "Y: " + Math.round(-1*joystick.deltaY());
+				outputxyText.innerHTML = "X: " + Math.round(joystick.deltaX()) + "Y: " + Math.round(-1*joystick.deltaY());
 			}
 			buttonclick('S'+Math.round(slider.value));
 			outputzText.innerHTML = "Z: " + slider.value;
