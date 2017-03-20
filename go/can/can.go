@@ -1,10 +1,11 @@
-//System to work with the can bus
+//Package can - a system to work with the can bus
 package can
 
 import (
+	"math/rand"
+
 	"../util"
 	"github.com/brutella/can"
-	"math/rand"
 )
 
 //CAN bus
@@ -31,7 +32,7 @@ func SetupCAN(id uint8) (c CAN) {
 	return
 }
 
-//Send a message
+//SendMessage sends a message
 func (c CAN) SendMessage(m Message) {
 	var f can.Frame
 	f.ID = uint32(rand.Int31n((1 << 11) - 1)) //Create random ID

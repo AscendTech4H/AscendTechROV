@@ -1,9 +1,9 @@
 package AscendTechROV
 
 import (
-	_ "./can"
+	_ "./can" //Check all of the imports
 	_ "./controller"
-	_ "./demo"
 	_ "./motor"
+	_ "./startup"
 	_ "./util"
 )
