@@ -25,3 +25,24 @@ func SetMotor(motor uint8, pwm uint8) Command {
 	c.pwm = pwm
 	return c
 }
+
+type laserCMD struct {
+	commandBase
+	state bool
+}
+
+func (c laserCMD) Arguments() []byte {
+	s := byte(0)
+	if c.state {
+		s = 1
+	}
+	return []byte{s}
+}
+
+//SetLaser generates a command to set the laser state
+func SetLaser(state bool) Command {
+	c := laserCMD{}
+	c.id = 1
+	c.state = state
+	return c
+}
