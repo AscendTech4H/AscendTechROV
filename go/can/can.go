@@ -2,9 +2,12 @@
 package can
 
 import (
+	"flag"
 	"math/rand"
 
+	"../startup"
 	"../util"
+
 	"github.com/brutella/can"
 )
 
@@ -47,4 +50,13 @@ func (c CAN) SendMessage(m Message) {
 type Message struct {
 	Sender uint8
 	Data   []byte
+}
+
+var canName string
+
+func init() {
+	startup.NewTask(1, func() error { //Set up can flag parsing
+		flag.StringVar(&canName, "can", "can0", "Can bus (default: can0)")
+		return nil
+	})
 }
