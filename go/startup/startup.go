@@ -15,6 +15,9 @@ type Task struct {
 var tasks []*Task
 
 //NewTask allocates & initializes a Task
+//Time:
+//	200-249: Setup for web interface
+//	250: Start web interface
 func NewTask(time uint8, task func() error) (t *Task) {
 	t = new(Task)
 	t.Time = time
@@ -27,7 +30,7 @@ func init() {
 	tasks = []*Task{}
 }
 
-//Start starts the program
+//Start starts the robot
 func Start() {
 	log.Println("Initiating startup. . .")
 	for i := uint8(0); i < 255; i++ {

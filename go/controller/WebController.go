@@ -12,10 +12,16 @@ import (
 )
 
 func init() {
-	//Start web server last
+	//HTTP startup
+	startup.NewTask(200, func() error {
+		http.HandleFunc("/websock", websockhandler)
+		http.Handle("/static", http.FileServer(http.Dir("static")))
+		return nil
+	})
+	//Web server startup last
 	startup.NewTask(250, func() error {
 		log.Println("Starting web controller. . .")
-		go start()
+		go http.ListenAndServe(":8080", nil)
 		return nil
 	})
 	lck = new(sync.RWMutex)
@@ -30,11 +36,6 @@ type Robot struct {
 var r *Robot
 var lck *sync.RWMutex
 
-func start() {
-	http.HandleFunc("/websock", websockhandler)
-	http.Handle("/static", http.FileServer(http.Dir("static")))
-	http.ListenAndServe(":8080", nil)
-}
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 	var upgrader = websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	connection, error := upgrader.Upgrade(writer, requ, nil)
