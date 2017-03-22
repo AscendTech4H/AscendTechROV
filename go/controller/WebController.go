@@ -27,10 +27,17 @@ func init() {
 	lck = new(sync.RWMutex)
 }
 
+//Direction constants
+const (
+	CCW = iota
+	STOP
+	CW
+)
+
 //Robot contains the controller data
 type Robot struct {
-	Claw, Agar, Laser bool
-	Forward, Up, Turn int
+	Claw, Agar, Laser           bool
+	Forward, Up, Turn, ClawTurn int
 }
 
 var r *Robot
@@ -70,6 +77,12 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 			r.Forward, _ = strconv.Atoi(string(m[1:]))
 		} else if m[0] == []byte("S")[0] {
 			r.Up, _ = strconv.Atoi(string(m[1:]))
+		} else if m[0] == []byte("{")[0] {
+			r.ClawTurn = CCW
+		} else if m[0] == []byte("^")[0] {
+			r.ClawTurn = STOP
+		} else if m[0] == []byte("}")[0] {
+			r.ClawTurn = CW
 		}
 		lck.Unlock()
 	}
@@ -85,5 +98,6 @@ func RobotState() (rob Robot) {
 	rob.Laser = r.Laser
 	rob.Turn = r.Turn
 	rob.Up = r.Up
+	rob.ClawTurn = r.ClawTurn
 	return
 }
