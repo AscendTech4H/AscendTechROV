@@ -63,15 +63,21 @@ var Bus CAN
 //Sender is the CAN command sender
 var Sender commander.Sender
 
+//NoCAN says if CAN is disabled
+var NoCAN bool
+
 func init() {
 	startup.NewTask(1, func() error { //Set up can flag parsing
 		flag.StringVar(&canName, "can", "can0", "Can bus (default: can0)")
 		flag.UintVar(&senderID, "canid", 65, "Can bus sender ID (default: 65)")
+		flag.BoolVar(&NoCAN, "nocan", false, "Whether can is disabled")
 		return nil
 	})
 	startup.NewTask(100, func() error {
-		Bus = SetupCAN(uint8(senderID), canName)
-		Sender = Bus.AsSender()
+		if !NoCAN {
+			Bus = SetupCAN(uint8(senderID), canName)
+			Sender = Bus.AsSender()
+		}
 		return nil
 	})
 }
