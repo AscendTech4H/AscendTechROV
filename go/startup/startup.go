@@ -1,6 +1,7 @@
 package startup
 
 import (
+	"flag"
 	"log"
 
 	"../util"
@@ -28,6 +29,11 @@ func NewTask(time uint8, task func() error) (t *Task) {
 
 func init() {
 	tasks = []*Task{}
+
+	NewTask(2, func() error { //Parse flags
+		flag.Parse()
+		return nil
+	})
 }
 
 //Start starts the robot
