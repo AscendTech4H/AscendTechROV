@@ -53,7 +53,9 @@ type Message struct {
 	Data   []byte
 }
 
+//Args
 var canName string
+var senderID uint
 
 //Bus is the main CAN bus
 var Bus CAN
@@ -64,10 +66,11 @@ var Sender commander.Sender
 func init() {
 	startup.NewTask(1, func() error { //Set up can flag parsing
 		flag.StringVar(&canName, "can", "can0", "Can bus (default: can0)")
+		flag.UintVar(&senderID, "canid", 65, "Can bus sender ID (default: 65)")
 		return nil
 	})
 	startup.NewTask(200, func() error {
-		Bus = SetupCAN(65, canName)
+		Bus = SetupCAN(uint8(senderID), canName)
 		Sender = Bus.AsSender()
 		return nil
 	})
