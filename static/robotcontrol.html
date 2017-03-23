@@ -3,8 +3,7 @@
 		<title>Robot Control</title>
 		<link rel="stylesheet" href="static/materialize.css">
 		<script src="static/materialize.js"></script>
-		<script src="static/jquery.js"></script>
-		<script src="static/virtualjoystick.js"></script>
+		<script src="virtualjoystick.js"></script>
 		<style>
 			#container {
 				height		: 90%;
@@ -65,13 +64,16 @@
 			<div id="Outputz"> Z: 0</div>
 
 	</div>
+		<img id="cam"></img>
 		<div class="col s6" id="container">	</div>
 	</div>
 	<script>
 		x = new WebSocket("ws://"+location.host+"/websock")
 		function buttonclick(txt) { x.send(txt) }
-	</script>
-	<script>
+		x.onmessage=function(msgEvent){
+			document.getElementById("cam").src="data:image/jpeg;base64,"+btoa(msg.data);
+		}
+
 		var joystick = new VirtualJoystick({
 			container	: document.getElementById('container'),
 			mouseSupport	: true,
