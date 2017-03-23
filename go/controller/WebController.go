@@ -46,8 +46,11 @@ type Robot struct {
 var r *Robot
 var lck *sync.RWMutex
 
-func sendData(data []byte) {
-	currentConn.WriteMessage(websocket.BinaryMessage, data)
+//SendData sends data through websocket
+func SendData(data []byte) {
+	if currentConn != nil{
+		currentConn.WriteMessage(websocket.BinaryMessage, data)
+	}
 }
 
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
