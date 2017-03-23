@@ -31,4 +31,14 @@ func init() {
 		robot.rightfront = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
 		return nil
 	})
+	/*startup.NewTask(255, func() error {
+		tick := time.NewTicker(5 * time.Second)
+		go func() {
+			for <-tick.C {
+				r := controller.RobotState()
+				//Do something when I am awake enough to know what I am doing
+			}
+		}()
+		return nil
+	})*/
 }
