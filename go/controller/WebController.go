@@ -27,6 +27,9 @@ func init() {
 	lck = new(sync.RWMutex)
 }
 
+currentConn *Conn;
+currentType int;
+
 //Direction constants
 const (
 	CCW = iota
@@ -43,18 +46,20 @@ type Robot struct {
 var r *Robot
 var lck *sync.RWMutex
 
+func sendData(data byte[]){
+	currentConn.WriteMessage(currentType,data)
+}
+
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 	var upgrader = websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	connection, error := upgrader.Upgrade(writer, requ, nil)
 	if error != nil {
 		return
 	}
+	currentConn = connection //used when sending data
+	cuurrenType = t
 	for {
 		t, m, e := connection.ReadMessage() //Read a message
-		if e != nil {
-			return
-		}
-		e = connection.WriteMessage(t, m) //Do something
 		if e != nil {
 			return
 		}
