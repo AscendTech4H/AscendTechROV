@@ -5,6 +5,7 @@ import (
 	"flag"
 	"math/rand"
 
+	"../commander"
 	"../startup"
 	"../util"
 
@@ -19,10 +20,10 @@ type CAN struct {
 }
 
 //SetupCAN sets up a CAN bus
-func SetupCAN(id uint8) (c CAN) {
+func SetupCAN(id uint8, port string) (c CAN) {
 	c.MessageChan = make(chan Message)
 	c.SenderID = id
-	bus, err := can.NewBusForInterfaceWithName("can0")
+	bus, err := can.NewBusForInterfaceWithName(port)
 	util.UhOh(err)
 	bus.SubscribeFunc(func(f can.Frame) {
 		var m Message
@@ -54,9 +55,20 @@ type Message struct {
 
 var canName string
 
+//Bus is the main CAN bus
+var Bus CAN
+
+//Sender is the CAN command sender
+var Sender commander.Sender
+
 func init() {
 	startup.NewTask(1, func() error { //Set up can flag parsing
 		flag.StringVar(&canName, "can", "can0", "Can bus (default: can0)")
+		return nil
+	})
+	startup.NewTask(200, func() error {
+		Bus = SetupCAN(65, canName)
+		Sender = Bus.AsSender()
 		return nil
 	})
 }
