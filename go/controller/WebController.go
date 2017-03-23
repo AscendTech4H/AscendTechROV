@@ -47,14 +47,14 @@ var r *Robot
 var lck *sync.RWMutex
 
 func sendData(data []byte) {
-	currentConn.WriteMessage(WebSockde, data)
+	currentConn.WriteMessage(websocket.BinaryMessage, data)
 }
 
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 	var upgrader = websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	connection, err := upgrader.Upgrade(writer, requ, nil)
 	util.UhOh(err)
-	currentConn := connection //used when sending data
+	currentConn = connection //used when sending data
 	for {
 		_, m, e := connection.ReadMessage() //Read a message
 		util.UhOh(e)
