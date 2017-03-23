@@ -59,29 +59,31 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 			return
 		}
 		lck.Lock()
-		if m[0] == []byte("C")[0] {
+		str := string(m)
+		switch str[0] {
+		case 'C':
 			r.Claw = true
-		} else if m[0] == []byte("c")[0] {
+		case 'c':
 			r.Claw = false
-		} else if m[0] == []byte("A")[0] {
+		case 'A':
 			r.Agar = true
-		} else if m[0] == []byte("a")[0] {
+		case 'a':
 			r.Agar = false
-		} else if m[0] == []byte("L")[0] {
+		case 'L':
 			r.Laser = true
-		} else if m[0] == []byte("l")[0] {
+		case 'l':
 			r.Laser = false
-		} else if m[0] == []byte("X")[0] {
+		case 'X':
 			r.Turn, _ = strconv.Atoi(string(m[1:]))
-		} else if m[0] == []byte("Y")[0] {
+		case 'Y':
 			r.Forward, _ = strconv.Atoi(string(m[1:]))
-		} else if m[0] == []byte("S")[0] {
+		case 'S':
 			r.Up, _ = strconv.Atoi(string(m[1:]))
-		} else if m[0] == []byte("{")[0] {
+		case '{':
 			r.ClawTurn = CCW
-		} else if m[0] == []byte("^")[0] {
+		case '^':
 			r.ClawTurn = STOP
-		} else if m[0] == []byte("}")[0] {
+		case '}':
 			r.ClawTurn = CW
 		}
 		lck.Unlock()
