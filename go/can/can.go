@@ -69,7 +69,7 @@ func init() {
 		flag.UintVar(&senderID, "canid", 65, "Can bus sender ID (default: 65)")
 		return nil
 	})
-	startup.NewTask(200, func() error {
+	startup.NewTask(100, func() error {
 		Bus = SetupCAN(uint8(senderID), canName)
 		Sender = Bus.AsSender()
 		return nil
