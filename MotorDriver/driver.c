@@ -9,7 +9,7 @@ uint8 ctr=0;
 //Macro to write to a pin
 #define pinWrite(port,pin,val) PORT##port =  val * (val << pin)
 
-//Define rest of pins later
+//Define pins
 #define PIN0 D, 0
 #define PIN1 D, 1
 #define PIN2 D, 2
