@@ -1,0 +1,15 @@
+<html>
+<head>
+	<title>Copilot Robot Control</title>
+</head>
+<body>
+	<b>AscendTech Robot Copilot Control</b>
+	<img id="cam"></img>
+	<script>
+		x = new WebSocket("ws://"+location.host+"/co_websock")
+		x.onmessage=function(msgEvent){
+			document.getElementById("cam").src="data:image/jpeg;base64,"+btoa(msg.data);
+		}
+	</script>
+</body>
+</html>
