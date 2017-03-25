@@ -2,6 +2,7 @@ package controller
 
 import (
 	"../controller"
+	"../copilot"
 	"../startup"
 	"../util"
 	"github.com/blackjack/webcam"
@@ -23,6 +24,7 @@ func init() {
 				data, err := cam.ReadFrame()
 				util.UhOh(err)
 				controller.SendData(data)
+				copilot.SendData(data)
 			}
 		}()
 	})
