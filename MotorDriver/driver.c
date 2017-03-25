@@ -11,6 +11,23 @@ uint8 ctr=0;
 
 //Define rest of pins later
 #define PIN0 D, 0
+#define PIN1 D, 1
+#define PIN2 D, 2
+#define PIN3 D, 3
+#define PIN4 D, 4
+#define PIN5 B, 7
+#define PIN6 D, 5
+#define PIN7 D, 6
+#define PIN8 D, 7
+#define PIN9 B, 0
+#define PIN10 C, 4
+#define PIN11 C, 2
+#define PIN12 C, 1
+#define PIN13 C, 0
+#define PIN14 B, 5
+#define PIN15 B, 4
+#define PIN16 B, 3
+#define PIN17 B, 1
 
 //Pin selection macro (e.g. PINx(0) -> PIN0)
 #define PINx(pin) PIN##pin
