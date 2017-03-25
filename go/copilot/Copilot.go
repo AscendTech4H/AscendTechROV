@@ -3,7 +3,6 @@ package controller
 import (
 	"log"
 	"net/http"
-	"strconv"
 	"sync"
 
 	"../startup"
