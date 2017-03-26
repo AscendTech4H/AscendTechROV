@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var lck *sync.RWMutex
+var lck *sync.Mutex
 
 func init() {
 	//HTTP startup
@@ -18,21 +18,25 @@ func init() {
 		http.HandleFunc("/co_websock", websockhandler)
 		return nil
 	})
-	lck = new(sync.RWMutex)
+	lck = new(sync.Mutex)
 }
 
 var currentConn *websocket.Conn
 
 //SendData sends data through websocket
 func SendData(data []byte) {
+	lck.Lock()
 	if currentConn != nil {
 		currentConn.WriteMessage(websocket.BinaryMessage, data)
 	}
+	lck.Unlock()
 }
 
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
+	lck.Lock()
 	var upgrader = websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	connection, err := upgrader.Upgrade(writer, requ, nil)
 	util.UhOh(err)
 	currentConn = connection //used when sending data
+	lck.Unlock()
 }

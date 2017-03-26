@@ -48,9 +48,11 @@ var lck *sync.RWMutex
 
 //SendData sends data through websocket
 func SendData(data []byte) {
-	if currentConn != nil{
+	lck.Lock()
+	if currentConn != nil {
 		currentConn.WriteMessage(websocket.BinaryMessage, data)
 	}
+	lck.Unlock()
 }
 
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
