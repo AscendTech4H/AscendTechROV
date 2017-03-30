@@ -1,4 +1,4 @@
-package controller
+package copilot
 
 import (
 	"net/http"
