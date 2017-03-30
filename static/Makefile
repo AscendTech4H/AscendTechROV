@@ -13,3 +13,5 @@ virtualjoystick.js:
 
 clean:
 	rm materialize.css materialize.js virtualjoystick.js
+
+test: all

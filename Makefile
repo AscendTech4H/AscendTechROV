@@ -9,3 +9,7 @@ buildgo:
 clean:
 	$(MAKE) -C static clean
 	$(MAKE) -C go clean
+
+test:
+	$(MAKE) -C static test
+	$(MAKE) -C go test
