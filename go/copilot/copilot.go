@@ -26,17 +26,17 @@ var currentConn *websocket.Conn
 //SendData sends data through websocket
 func SendData(data []byte) {
 	lck.Lock()
+	defer lck.Unlock()
 	if currentConn != nil {
 		currentConn.WriteMessage(websocket.BinaryMessage, data)
 	}
-	lck.Unlock()
 }
 
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 	lck.Lock()
+	defer lck.Unlock()
 	var upgrader = websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	connection, err := upgrader.Upgrade(writer, requ, nil)
 	util.UhOh(err)
 	currentConn = connection //used when sending data
-	lck.Unlock()
 }
