@@ -1,7 +1,11 @@
-all: buildstatic
+all: buildstatic buildgo
 
-buildstatic: 
-	$(MAKE) -C static
+buildstatic:
+	$(MAKE) -C static all
 
-clean: 
+buildgo:
+	$(MAKE) -C go all
+
+clean:
 	$(MAKE) -C static clean
+	$(MAKE) -C go clean
