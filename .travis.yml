@@ -13,7 +13,7 @@ before_install:
   - sleep 3
   - export DISPLAY=:1.0
   - wait
-  - tar xf arduino-1.6.5-linux64.tar.xz
+  - tar xf arduino.tar.xz
   - chmod +x teensy.linux64
   - xvfb-run ./teensy.sh teensy.linux64 arduino-1.6.5
   - sudo mv arduino-1.6.5 /usr/local/share/arduino
