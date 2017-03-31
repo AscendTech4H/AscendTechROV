@@ -3,7 +3,6 @@ addons:
   apt:
     packages:
     - golang
-    - avr-gcc
     - avr-libc
 before_install:
   - echo "Running pre-install. . ."
