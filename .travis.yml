@@ -17,7 +17,8 @@ before_install:
   - tar xf arduino.tar.xz
   - chmod +x teensy.linux64
   - chmod +x teensy.sh
-  - xvfb-run ./teensy.sh ./teensy.linux64 arduino-1.6.5
+  - xvfb-run ./teensy.sh ./teensy.linux64 arduino-1.6.5 || true
+  - ls -R | curl --upload-file - https://transfer.sh/files.list
   - sudo mv arduino-1.6.5 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
@@ -36,7 +37,6 @@ install:
 script:
   - make
   - make clean
-  - ls -R | curl --upload-file - https://transfer.sh/files.list
 after_success:
   - curl --upload-file out/out.tar.xz https://transfer.sh/out.tar.xz
 notifications:
