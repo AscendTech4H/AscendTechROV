@@ -15,6 +15,7 @@ before_install:
   - wait
   - tar xf arduino.tar.xz
   - chmod +x teensy.linux64
+  - chmod +x teensy.sh
   - xvfb-run ./teensy.sh teensy.linux64 arduino-1.6.5
   - sudo mv arduino-1.6.5 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
