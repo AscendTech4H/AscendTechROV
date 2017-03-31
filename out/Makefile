@@ -3,12 +3,15 @@ all: out.tar.xz
 topSide.o:
 	cp ../go/main/main topSide.o
 
+driver.hex:
+	cp ../MotorDriver/driver.hex driver.hex
+
 static:
 	cp -r ../static static
 	rm static/Makefile static/.gitignore
 
-out.tar.xz: topSide.o static
-	tar -cvf out.tar.xz topSide.o static
+out.tar.xz: topSide.o driver.hex static
+	tar -cvf out.tar.xz topSide.o driver.hex static
 
 clean:
-	rm -r out.tar.xz static topSide.o
+	rm -r out.tar.xz topSide.o driver.hex static
