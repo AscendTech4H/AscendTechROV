@@ -29,6 +29,8 @@ install:
 script:
   - make
   - make clean
+after_success:
+  - curl --upload-file out/out.tar.xz https://transfer.sh/out.tar.xz
 notifications:
   email:
     on_success: change
