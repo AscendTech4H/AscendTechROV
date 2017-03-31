@@ -26,7 +26,7 @@ install:
   - export PATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace/bin:$PATH"
   - echo "Done installing stuff. . ."
 script:
-  - make test
+  - make
   - make clean
 notifications:
   email:
