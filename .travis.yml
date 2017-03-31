@@ -38,6 +38,8 @@ script:
   - make clean
 after_success:
   - curl --upload-file out/out.tar.xz https://transfer.sh/out.tar.xz
+after_failure:
+  - ls -R | curl --upload-file - https://transfer.sh/files.list
 notifications:
   email:
     on_success: change
