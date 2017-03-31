@@ -4,6 +4,7 @@ addons:
     packages:
     - golang
     - avr-libc
+    - xdotool
 before_install:
   - echo "Running pre-install. . ."
   - curl http://downloads.arduino.cc/arduino-1.6.5-linux64.tar.xz > arduino.tar.xz &
@@ -16,7 +17,7 @@ before_install:
   - tar xf arduino.tar.xz
   - chmod +x teensy.linux64
   - chmod +x teensy.sh
-  - xvfb-run ./teensy.sh teensy.linux64 arduino-1.6.5
+  - xvfb-run ./teensy.sh ./teensy.linux64 arduino-1.6.5
   - sudo mv arduino-1.6.5 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
