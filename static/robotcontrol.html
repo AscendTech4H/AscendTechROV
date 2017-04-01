@@ -1,8 +1,8 @@
 <html>
 	<head>
 		<title>Robot Control</title>
-		<link rel="stylesheet" href="static/materialize.css">
-		<script src="static/materialize.js"></script>
+		<link rel="stylesheet" href="materialize.css">
+		<script src="materialize.js"></script>
 		<script src="virtualjoystick.js"></script>
 		<style>
 			#container {
@@ -71,7 +71,7 @@
 		x = new WebSocket("ws://"+location.host+"/websock")
 		function buttonclick(txt) { x.send(txt) }
 		x.onmessage=function(msgEvent){
-			document.getElementById("cam").src="data:image/jpeg;base64,"+btoa(msg.data);
+			document.getElementById("cam").src="data:image/jpeg;base64,"+btoa(msgEvent.data);
 		}
 
 		var joystick = new VirtualJoystick({
