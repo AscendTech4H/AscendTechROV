@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"sync"
 
+	"../debug"
 	"../startup"
 	"../util"
 
@@ -43,7 +44,7 @@ type Robot struct {
 	Forward, Up, Turn, ClawTurn int
 }
 
-var r *Robot
+var r Robot
 var lck *sync.RWMutex
 
 //SendData sends data through websocket
@@ -60,11 +61,19 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 	connection, err := upgrader.Upgrade(writer, requ, nil)
 	util.UhOh(err)
 	currentConn = connection //used when sending data
+	defer func() {           //If we crash, don't break the robot
+		currentConn = nil
+		connection.Close()
+		lck.Unlock()
+	}()
 	for {
 		_, m, e := connection.ReadMessage() //Read a message
-		util.UhOh(e)
 		lck.Lock()
+		util.UhOh(e)
 		str := string(m)
+		if debug.Verbose {
+			log.Printf("Websocket Command: %s", str)
+		}
 		switch str[0] {
 		case 'C':
 			r.Claw = true
@@ -79,11 +88,11 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 		case 'l':
 			r.Laser = false
 		case 'X':
-			r.Turn, _ = strconv.Atoi(string(m[1:]))
+			r.Turn, _ = strconv.Atoi(str[1:])
 		case 'Y':
-			r.Forward, _ = strconv.Atoi(string(m[1:]))
+			r.Forward, _ = strconv.Atoi(str[1:])
 		case 'S':
-			r.Up, _ = strconv.Atoi(string(m[1:]))
+			r.Up, _ = strconv.Atoi(str[1:])
 		case '{':
 			r.ClawTurn = CCW
 		case '^':
