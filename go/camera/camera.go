@@ -24,12 +24,14 @@ func init() {
 	startup.NewTask(252, func() error { //Set up can flag parsing
 		cam, err := webcam.Open(camLoc)
 		util.UhOh(err)
+		util.UhOh(cam.StartStreaming())
 		tick := time.NewTicker(time.Second / 2) //send the img twice a second
 		go func() {
 			for t := range tick.C {
 				if debug.Verbose {
 					log.Println("Start camera read at time " + t.String())
 				}
+				util.UhOh(cam.WaitForFrame(5))
 				data, err := cam.ReadFrame()
 				util.UhOh(err)
 				controller.SendData(data)
