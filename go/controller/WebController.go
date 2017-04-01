@@ -16,7 +16,7 @@ func init() {
 	//HTTP startup
 	startup.NewTask(200, func() error {
 		http.HandleFunc("/websock", websockhandler)
-		http.Handle("/static", http.FileServer(http.Dir("static")))
+		http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 		return nil
 	})
 	//Web server startup last
