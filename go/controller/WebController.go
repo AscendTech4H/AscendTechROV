@@ -29,6 +29,34 @@ func init() {
 	lck = new(sync.RWMutex)
 }
 
+//conn is a connection used internally
+type conn struct {
+	sock *websocket.Conn
+}
+
+func (c *conn) read() ([]byte, error) {
+	_, msg, err := c.sock.ReadMessage()
+	if err != nil {
+		return nil, err
+	}
+	return msg, err
+}
+
+func (c *conn) write(msg []byte) error {
+	return c.sock.WriteMessage(websocket.BinaryMessage, msg)
+}
+
+func loadConn(w http.ResponseWriter, r *http.Request) (*conn, error) {
+	upgrader := websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
+	connection, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		return nil, err
+	}
+	c := new(conn)
+	c.sock = connection
+	return c, nil
+}
+
 var currentConn *websocket.Conn
 
 //Direction constants
@@ -45,7 +73,7 @@ type Robot struct {
 }
 
 var r Robot
-var lck *sync.RWMutex
+var lck *sync.RWMutex //Lock on robot object
 
 //SendData sends data through websocket
 func SendData(data []byte) {
@@ -57,23 +85,22 @@ func SendData(data []byte) {
 }
 
 func websockhandler(writer http.ResponseWriter, requ *http.Request) {
-	var upgrader = websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
-	connection, err := upgrader.Upgrade(writer, requ, nil)
+	connection, err := loadConn(writer, requ)
 	util.UhOh(err)
-	currentConn = connection //used when sending data
-	defer func() {           //If we crash, don't break the robot
-		currentConn = nil
-		connection.Close()
+	debug.VLog("Websocket connected")
+	defer func() { //If we crash, don't break the robot
 		lck.Unlock()
+		debug.VLog("Websocket disconnected")
 	}()
 	for {
-		_, m, e := connection.ReadMessage() //Read a message
+		m, e := connection.read() //Read a message
 		lck.Lock()
 		util.UhOh(e)
 		str := string(m)
 		if debug.Verbose {
 			log.Printf("Websocket Command: %s", str)
 		}
+		var err error
 		switch str[0] {
 		case 'C':
 			r.Claw = true
@@ -88,18 +115,21 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 		case 'l':
 			r.Laser = false
 		case 'X':
-			r.Turn, _ = strconv.Atoi(str[1:])
+			r.Turn, err = strconv.Atoi(str[1:])
 		case 'Y':
-			r.Forward, _ = strconv.Atoi(str[1:])
+			r.Forward, err = strconv.Atoi(str[1:])
 		case 'S':
-			r.Up, _ = strconv.Atoi(str[1:])
+			r.Up, err = strconv.Atoi(str[1:])
 		case '{':
 			r.ClawTurn = CCW
 		case '^':
 			r.ClawTurn = STOP
 		case '}':
 			r.ClawTurn = CW
+		default:
+			log.Printf("Ignored unrecognized WebSocket command %s\n", str)
 		}
+		util.UhOh(err)
 		lck.Unlock()
 	}
 }
