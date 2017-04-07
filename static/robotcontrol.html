@@ -71,6 +71,7 @@
 		x = new WebSocket("ws://"+location.host+"/websock")
 		function buttonclick(txt) { x.send(txt) }
 		x.onmessage=function(msgEvent){
+			console.log("Loading camera data: "+btoa(msgEvent.data));
 			document.getElementById("cam").src="data:image/jpeg;base64,"+btoa(msgEvent.data);
 		}
 
