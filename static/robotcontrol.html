@@ -65,9 +65,10 @@
 			<div id="Outputz"> Z: 0</div>
 
 	</div>
+<div class="col s6">
 		<img id="cam"></img>
-		<div class="col s6" id="container">	</div>
-	</div>
+		<div id="container">	</div>
+</div>	</div>
 	<script>
 		x = new WebSocket("ws://"+location.host+"/websock")
 		function buttonclick(txt) { x.send(txt) }
@@ -85,6 +86,8 @@
 		var slider = document.getElementById('slider');
 		var outputxyText = document.getElementById('Outputxy');
 		var outputzText = document.getElementById('Outputz');
+		var camnum = 0;
+		var brk = 0;
 		setInterval(function(){
 			if (joystick._pressed){
 				buttonclick('X'+Math.round(joystick.deltaX()));
@@ -93,6 +96,8 @@
 			}
 			buttonclick('S'+Math.round(slider.value));
 			outputzText.innerHTML = "Z: " + slider.value;
+			document.getElementById("cam").src="/cam/"+camnum+"?"+brk;
+			brk++;
 		}, 500);
 	</script>
 </body>
