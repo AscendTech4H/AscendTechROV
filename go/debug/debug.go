@@ -5,6 +5,7 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 
 	"../startup"
@@ -18,17 +19,19 @@ type logBuf struct {
 	buf  []byte
 	outs []http.ResponseWriter
 	lck  sync.Mutex
+	cle  map[http.ResponseWriter]chan struct{}
 }
 
 func (l *logBuf) Write(b []byte) (int, error) {
 	l.lck.Lock()
 	defer l.lck.Unlock()
-	s := html.EscapeString(string(b))
+	s := "data: " + strings.TrimRight(strings.Replace(html.EscapeString(string(b)), "\n", "<br>", -1), "<br>") + "\n\n"
 	for i, w := range l.outs {
 		_, err := w.Write([]byte(s))
 		w.(http.Flusher).Flush()
 		if err != nil {
 			l.outs[i] = nil
+			l.cle[w] <- struct{}{}
 		}
 	}
 	re := []http.ResponseWriter{}
@@ -41,10 +44,13 @@ func (l *logBuf) Write(b []byte) (int, error) {
 	l.buf = append(l.buf, b...)
 	return len(b), nil
 }
-func (l *logBuf) Add(w http.ResponseWriter) {
+func (l *logBuf) Add(w http.ResponseWriter) chan struct{} {
 	l.lck.Lock()
 	defer l.lck.Unlock()
 	l.outs = append(l.outs, w)
+	c := make(chan struct{})
+	l.cle[w] = c
+	return c
 }
 
 var lbuf *logBuf
@@ -65,9 +71,17 @@ func init() {
 		lbuf = new(logBuf)
 		lbuf.buf = []byte{}
 		lbuf.outs = []http.ResponseWriter{}
+		lbuf.cle = make(map[http.ResponseWriter]chan struct{})
 		http.HandleFunc("/debug", func(w http.ResponseWriter, r *http.Request) {
-			lbuf.Add(w)
+			w.Header().Set("Content-Type", "text/event-stream")
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("Connection", "keep-alive")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("data: <b>Connected</b>\n\n"))
+			w.(http.Flusher).Flush()
+			<-lbuf.Add(w)
 		})
+		log.SetOutput(lbuf)
 		return nil
 	})
 }

@@ -1,0 +1,16 @@
+<html>
+        <head>
+                <title>ROV Debugger</title>
+                <link rel="stylesheet" href="materialize.css">
+		<script src="materialize.js"></script>
+        </head>
+        <body>
+                <p id="debug"></p>
+                <script>
+                        var es = new EventSource("/debug");
+                        es.onmessage = function(ev) {
+                                document.getElementById("debug").innerHTML += ev.data + "<br>";
+                        }
+                </script>
+        </body>
+</html>
