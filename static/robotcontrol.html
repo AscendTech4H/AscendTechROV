@@ -41,6 +41,9 @@
 	<span style="height:10%; font-size:200%;"><b>Archelon Robot Control</b></span>
 	<div class="row">
 	<div class="col s6">
+			<p>Camera Switch</p>
+			<button class="waves-effect waves-light btn" onclick = "switchCam(1);">&larr;</button>
+			<button class="waves-effect waves-light btn" onclick = "switchCam(-1);">&rarr;</button>
 			<p>Claw</p>
 			<button class="waves-effect waves-light btn" onclick = "buttonclick('C');">Open</button>
 			<button class="waves-effect waves-light btn" onclick = "buttonclick('c');">Close</button>
@@ -87,6 +90,11 @@
 		var outputxyText = document.getElementById('Outputxy');
 		var outputzText = document.getElementById('Outputz');
 		var camnum = 0;
+		function switchCam(n) {
+			camnum+=n;
+			if(n>2){n=0;}
+			if(n<0){n=2;}
+		}
 		var brk = 0;
 		setInterval(function(){
 			if (joystick._pressed){
