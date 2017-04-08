@@ -96,9 +96,13 @@
 			}
 			buttonclick('S'+Math.round(slider.value));
 			outputzText.innerHTML = "Z: " + slider.value;
+		}, 1000);
+		document.getElementById("cam").src="/cam/"+camnum+"?"+brk;
+		brk++;
+		document.getElementById("cam").onload = function() {
 			document.getElementById("cam").src="/cam/"+camnum+"?"+brk;
 			brk++;
-		}, 500);
+		}
 	</script>
 </body>
 </html>

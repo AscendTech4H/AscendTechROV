@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"fmt"
 
 	"../debug"
 	"../startup"
@@ -36,6 +37,8 @@ func OpenCam(file string) (*Cam, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(ca.GetSupportedFormats())
+	ca.SetImageFormat(webcam.PixelFormat(1196444237),640,480)
 	err = ca.StartStreaming()
 	if err != nil {
 		return nil, err
@@ -96,7 +99,9 @@ func camhandler(writer http.ResponseWriter, requ *http.Request) {
 
 	//We are good
 	writer.WriteHeader(http.StatusOK)
-	_, err = writer.Write(dat)
+	n, err := writer.Write(dat)
+	writer.(http.Flusher).Flush()
+	log.Printf("wrote %d bytes",n)
 	if err != nil { //Not sure what would happen here
 		debug.VLog("Write error: " + err.Error())
 		debug.VLog("They call me teapot")
