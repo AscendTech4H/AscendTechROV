@@ -9,7 +9,7 @@ materialize: materialize.js materialize.css
 
 # virtualjoystick.js
 virtualjoystick.js:
-	curl https://raw.githubusercontent.com/jeromeetienne/virtualjoystick.js/master/virtualjoystick.js > virtualjoystick.js
+	curl https://raw.githubusercontent.com/Andrew-Parry/virtualjoystick.js/master/virtualjoystick.js > virtualjoystick.js
 
 clean:
 	rm materialize.css materialize.js virtualjoystick.js
