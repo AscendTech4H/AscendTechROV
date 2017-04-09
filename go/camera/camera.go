@@ -101,7 +101,9 @@ func camhandler(writer http.ResponseWriter, requ *http.Request) {
 	writer.WriteHeader(http.StatusOK)
 	n, err := writer.Write(dat)
 	writer.(http.Flusher).Flush()
-	log.Printf("wrote %d bytes",n)
+	if debug.Verbose {
+		log.Printf("wrote %d bytes",n)
+	}
 	if err != nil { //Not sure what would happen here
 		debug.VLog("Write error: " + err.Error())
 		debug.VLog("They call me teapot")
