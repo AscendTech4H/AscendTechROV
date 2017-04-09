@@ -33,29 +33,44 @@
 				-webkit-user-select	: none;
 				-moz-user-select	: none;
 				}
+				.teal .btn {
+					color: black;
+				}
+				a {
+					color: black !important;
+				}
 		</style>
 </head>
-<body class="teal lighten-5">
-	<img src="logo.png" style="width:100px;"></img>
-	<span style="height:10%; font-size:200%;"><b>Archelon Robot Control</b></span>
+<body class="teal lighten-4">
+	<nav>
+    <div class="nav-wrapper teal accent-3">
+			<a href="#" class="brand-logo"><img src="logo.png" height="100%"></img></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="robotcontrol.html">Control</a></li>
+        <li><a href="debug.html">Debug</a></li>
+        <li><a href="copilot.html">Copilot</a></li>
+      </ul>
+    </div>
+  </nav>
+	<div class="row s1"></div>
 	<div class="row">
 	<div class="col s6">
 			<p>Camera Switch</p>
-			<button class="waves-effect waves-light btn" onclick = "switchCam(1);">&larr;</button>
-			<button class="waves-effect waves-light btn" onclick = "switchCam(-1);">&rarr;</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "switchCam(1);">&larr;</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "switchCam(-1);">&rarr;</button>
 			<p>Claw</p>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('C');">Open</button>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('c');">Close</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('C');">Open</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('c');">Close</button>
 			<p>Claw Rotation</p>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('{');">&larr;CCW</button>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('^');">STOP</button>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('}');">CW&rarr;</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('{');">&larr;CCW</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('^');">STOP</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('}');">CW&rarr;</button>
 			<p>Agar</p>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('A');">On</button>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('a');">Off</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('A');">On</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('a');">Off</button>
 			<p>Laser</p>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('L');">On</button>
-			<button class="waves-effect waves-light btn" onclick = "buttonclick('l');">Off</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('L');">On</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('l');">Off</button>
 			<span id="result"></span>
 			<form action="#"><p class="range-field">
 				<input type="range" id="slider" min="-50"max="50" style = "-webkit-appearance: slider-vertical; /* WebKit */
@@ -67,9 +82,10 @@
 			<div id="Outputz"> Z: 0</div>
 
 	</div>
-<div class="col s6">
+<div class="col s5 z-depth-2">
+
+	<div id="container" class="teal accent-3">	</div>
 		<img id="cam"></img>
-		<div id="container">	</div>
 </div>	</div>
 	<script>
 		x = new WebSocket("ws://"+location.host+"/websock")
@@ -86,6 +102,9 @@
 			stickRadius	: 50
 		});
 		var slider = document.getElementById('slider');
+		slider.ontouchend = slider.onmouseup = function() {
+			slider.value=0;
+		}
 		var outputxyText = document.getElementById('Outputxy');
 		var outputzText = document.getElementById('Outputz');
 		var camnum = 0;
@@ -110,6 +129,10 @@
 			document.getElementById("cam").src="/cam/"+camnum+"?"+brk;
 			brk++;
 		}
+		document.getElementById("container").onresize = function() {
+			document.getElementById("cam").width = document.getElementById("container").clientWidth;
+		}
+		document.getElementById("container").onresize();
 	</script>
 </body>
 </html>
