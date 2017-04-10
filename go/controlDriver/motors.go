@@ -14,8 +14,14 @@ import (
 
 //Add more motors when I know which they are
 var robot struct {
-	leftback, rightback   motor.Motor
-	leftfront, rightfront motor.Motor
+	leftback, rightback         motor.Motor
+	leftfront, rightfront       motor.Motor
+	topleftfront, toprightfront motor.Motor
+	topleftback, toprightback   motor.Motor
+	claw                        struct {
+		roll motor.Motor
+		grab motor.Motor
+	}
 }
 
 //Motor IDs
@@ -25,6 +31,12 @@ const (
 	motorrb
 	motorlf
 	motorrf
+	motortlf
+	motortrf
+	motortlb
+	motortrb
+	motorroll
+	motorgrab
 )
 
 func init() {
@@ -33,10 +45,18 @@ func init() {
 		robot.rightback = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
 		robot.leftfront = cmdmotor.Motor(can.Sender, motorlb, motor.DC)
 		robot.rightfront = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
+
+		robot.topleftfront = cmdmotor.Motor(can.Sender, motorlf, motor.DC)
+		robot.toprightfront = cmdmotor.Motor(can.Sender, motorrf, motor.DC)
+		robot.topleftback = cmdmotor.Motor(can.Sender, motorlb, motor.DC)
+		robot.toprightback = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
+
+		robot.claw.roll = cmdmotor.Motor(can.Sender, motorroll, motor.DC)
+		robot.claw.grab = cmdmotor.Motor(can.Sender, motorgrab, motor.Servo)
 		return nil
 	})
 	startup.NewTask(255, func() error {
-		tick := time.NewTicker(5 * time.Second)
+		tick := time.NewTicker(time.Second / 5)
 		go func() {
 			for range tick.C {
 				rob := controller.RobotState()
@@ -47,6 +67,21 @@ func init() {
 				robot.rightback.Set(a)
 				robot.leftfront.Set(b)
 				robot.leftback.Set(b)
+				c := uint8(0)
+				switch rob.ClawTurn {
+				case controller.CCW:
+					c = 0
+				case controller.CW:
+					c = 255
+				case controller.STOP:
+					c = 127
+				}
+				robot.claw.roll.Set(c)
+				if rob.Claw {
+					robot.claw.grab.Set(180)
+				} else {
+					robot.claw.grab.Set(90)
+				}
 			}
 		}()
 		return nil
