@@ -6,19 +6,13 @@ buildstatic:
 buildgo:
 	$(MAKE) -C go all
 
-buildmotordriver:
-	$(MAKE) -C MotorDriver all
-
-clean: cleanstatic cleango cleanout cleanmotordriver
+clean: cleanstatic cleango cleanout
 
 cleanstatic:
 	$(MAKE) -C static clean
 
 cleango:
 	$(MAKE) -C go clean
-
-cleanmotordriver:
-	$(MAKE) -C MotorDriver clean
 
 cleanout:
 	$(MAKE) -C out clean
@@ -27,5 +21,5 @@ test:
 	$(MAKE) -C static test
 	$(MAKE) -C go test
 
-buildout: buildstatic buildgo buildmotordriver
+buildout: buildstatic buildgo
 	$(MAKE) -C out all
