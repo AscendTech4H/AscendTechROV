@@ -67,6 +67,10 @@ func init() {
 				robot.rightback.Set(a)
 				robot.leftfront.Set(b)
 				robot.leftback.Set(b)
+				robot.topleftback.Set(uint8(rob.Up))
+				robot.topleftfront.Set(uint8(rob.Up))
+				robot.topleftback.Set(uint8(rob.Up))
+				robot.toprightback.Set(uint8(rob.Up))
 				c := uint8(0)
 				switch rob.ClawTurn {
 				case controller.CCW:
