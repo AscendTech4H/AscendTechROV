@@ -30,11 +30,13 @@ type Cam struct {
 
 //Frame reads a frame from the camera
 func (c *Cam) Frame() []byte {
+	debug.VLog("Waiting for image lock")
 	dat := func() []byte {
 		c.lck.RLock()
 		defer c.lck.RUnlock()
 		return c.dat
 	}()
+	debug.VLog("Encoding image")
 	//Convert to jpeg
 	img := image.NewYCbCr(image.Rect(0, 0, 640, 480), image.YCbCrSubsampleRatio422)
 	pxgroups := make([]struct {
@@ -63,8 +65,10 @@ func (c *Cam) Frame() []byte {
 		img.Y[ypos1] = v.Y1
 		img.Y[ypos2] = v.Y2
 	}
+	debug.VLog("Encoding jpeg")
 	buf := bytes.NewBuffer(nil)
 	util.UhOh(jpeg.Encode(buf, img, nil))
+	debug.VLog("done sending")
 	return buf.Bytes()
 }
 
