@@ -50,9 +50,9 @@ func (c *Cam) Frame() []byte {
 		v.Cr = slc[3]
 	}
 	for i, v := range pxgroups {
-		x := (i * 2) % 160
+		x := (i * 2) % 640
 		x1, x2 := x, x+1
-		y := (i * 2) / 160
+		y := (i * 2) / 640
 
 		cpos := img.COffset(x, y)
 		ypos1 := img.YOffset(x1, y)
