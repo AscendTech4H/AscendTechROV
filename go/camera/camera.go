@@ -1,16 +1,20 @@
 package camera
 
 import (
+	"bytes"
 	"flag"
+	"fmt"
+	"image"
+	"image/jpeg"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"sync"
-	"fmt"
 
 	"../debug"
 	"../startup"
+	"../util"
 
 	"github.com/blackjack/webcam"
 )
@@ -26,9 +30,42 @@ type Cam struct {
 
 //Frame reads a frame from the camera
 func (c *Cam) Frame() []byte {
-	c.lck.RLock()
-	defer c.lck.RUnlock()
-	return c.dat
+	dat := func() []byte {
+		c.lck.RLock()
+		defer c.lck.RUnlock()
+		return c.dat
+	}()
+	//Convert to jpeg
+	img := image.NewYCbCr(image.Rect(0, 0, 160, 120), image.YCbCrSubsampleRatio422)
+	pxgroups := make([]struct {
+		Y1, Cb, Y2, Cr uint8
+	}, (160*120)/2)
+	for i := range pxgroups {
+		v := &pxgroups[i]
+		addr := i * 4
+		slc := dat[addr : addr+1]
+		v.Y1 = slc[0]
+		v.Cb = slc[1]
+		v.Y2 = slc[2]
+		v.Cr = slc[3]
+	}
+	for i, v := range pxgroups {
+		x := (i * 2) % 160
+		x1, x2 := x, x+1
+		y := (i * 2) / 160
+
+		cpos := img.COffset(x, y)
+		ypos1 := img.YOffset(x1, y)
+		ypos2 := img.YOffset(x2, y)
+
+		img.Cb[cpos] = v.Cb
+		img.Cr[cpos] = v.Cr
+		img.Y[ypos1] = v.Y1
+		img.Y[ypos2] = v.Y2
+	}
+	buf := bytes.NewBuffer(nil)
+	util.UhOh(jpeg.Encode(buf, img, nil))
+	return buf.Bytes()
 }
 
 //OpenCam opens a camera at a file path
@@ -38,7 +75,7 @@ func OpenCam(file string) (*Cam, error) {
 		return nil, err
 	}
 	fmt.Println(ca.GetSupportedFormats())
-	ca.SetImageFormat(webcam.PixelFormat(1196444237),640,480)
+	ca.SetImageFormat(webcam.PixelFormat(1448695129), 640, 480)
 	err = ca.StartStreaming()
 	if err != nil {
 		return nil, err
@@ -102,7 +139,7 @@ func camhandler(writer http.ResponseWriter, requ *http.Request) {
 	n, err := writer.Write(dat)
 	writer.(http.Flusher).Flush()
 	if debug.Verbose {
-		log.Printf("wrote %d bytes",n)
+		log.Printf("wrote %d bytes", n)
 	}
 	if err != nil { //Not sure what would happen here
 		debug.VLog("Write error: " + err.Error())
