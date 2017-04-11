@@ -36,10 +36,10 @@ func (c *Cam) Frame() []byte {
 		return c.dat
 	}()
 	//Convert to jpeg
-	img := image.NewYCbCr(image.Rect(0, 0, 160, 120), image.YCbCrSubsampleRatio422)
+	img := image.NewYCbCr(image.Rect(0, 0, 640, 480), image.YCbCrSubsampleRatio422)
 	pxgroups := make([]struct {
 		Y1, Cb, Y2, Cr uint8
-	}, (160*120)/2)
+	}, (640*480)/2)
 	for i := range pxgroups {
 		v := &pxgroups[i]
 		addr := i * 4
