@@ -21,6 +21,7 @@ import (
 )
 
 var camLocs [3]string
+var quality int
 
 //Cam is a camera object
 type Cam struct {
@@ -72,7 +73,7 @@ func (c *Cam) Frame() []byte {
 	debug.VLog("Encoding jpeg" + time.Since(start).String())
 	start = time.Now()
 	buf := bytes.NewBuffer(nil)
-	util.UhOh(jpeg.Encode(buf, img, &jpeg.Options{Quality: 20}))
+	util.UhOh(jpeg.Encode(buf, img, &jpeg.Options{Quality: quality}))
 	debug.VLog("done sending" + time.Since(start).String())
 	return buf.Bytes()
 }
@@ -163,6 +164,7 @@ func init() {
 		flag.StringVar(&(camLocs[0]), "cam0", "/dev/video0", "Camera connection 0")
 		flag.StringVar(&(camLocs[1]), "cam1", "/dev/video1", "Camera connection 1")
 		flag.StringVar(&(camLocs[2]), "cam2", "/dev/video2", "Camera connection 2")
+		flag.IntVar(&quality, "quality", 10, "Camera quality in percent (default: 10)")
 		return nil
 	})
 	startup.NewTask(245, func() error { //Open cameras
