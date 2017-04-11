@@ -72,7 +72,7 @@ func (c *Cam) Frame() []byte {
 	debug.VLog("Encoding jpeg" + time.Since(start).String())
 	start = time.Now()
 	buf := bytes.NewBuffer(nil)
-	util.UhOh(jpeg.Encode(buf, img, nil))
+	util.UhOh(jpeg.Encode(buf, img, &jpeg.Options{Quality: 100}))
 	debug.VLog("done sending" + time.Since(start).String())
 	return buf.Bytes()
 }
