@@ -43,7 +43,7 @@ func (c *Cam) Frame() []byte {
 	for i := range pxgroups {
 		v := &pxgroups[i]
 		addr := i * 4
-		slc := dat[addr : addr+1]
+		slc := dat[addr : addr+4]
 		v.Y1 = slc[0]
 		v.Cb = slc[1]
 		v.Y2 = slc[2]
