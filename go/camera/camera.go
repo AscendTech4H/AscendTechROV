@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"../debug"
 	"../startup"
@@ -30,13 +31,16 @@ type Cam struct {
 
 //Frame reads a frame from the camera
 func (c *Cam) Frame() []byte {
-	debug.VLog("Waiting for image lock")
+	start := time.Now()
+	debug.VLog("Waiting for image lock" + time.Since(start).String())
+	start = time.Now()
 	dat := func() []byte {
 		c.lck.RLock()
 		defer c.lck.RUnlock()
 		return c.dat
 	}()
-	debug.VLog("Encoding image")
+	debug.VLog("Encoding image" + time.Since(start).String())
+	start = time.Now()
 	//Convert to jpeg
 	img := image.NewYCbCr(image.Rect(0, 0, 640, 480), image.YCbCrSubsampleRatio422)
 	pxgroups := make([]struct {
@@ -65,10 +69,11 @@ func (c *Cam) Frame() []byte {
 		img.Y[ypos1] = v.Y1
 		img.Y[ypos2] = v.Y2
 	}
-	debug.VLog("Encoding jpeg")
+	debug.VLog("Encoding jpeg" + time.Since(start).String())
+	start = time.Now()
 	buf := bytes.NewBuffer(nil)
 	util.UhOh(jpeg.Encode(buf, img, nil))
-	debug.VLog("done sending")
+	debug.VLog("done sending" + time.Since(start).String())
 	return buf.Bytes()
 }
 
