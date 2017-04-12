@@ -161,13 +161,13 @@ func multiCamHandler(w http.ResponseWriter, r *http.Request) {
 	for i := 0; i < 3; i++ {
 		req, err := http.Get(fmt.Sprintf("localhost:8080/cam/%d", i))
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Camera request error on camera %d: %s", i, err.Error()), http.StatusFailedDependency)
+			http.Error(w, fmt.Sprintf("Camera request error on camera %d: %s", i, err.Error()), http.StatusInternalServerError)
 			return
 		}
 		defer req.Body.Close()
 		resp, err := ioutil.ReadAll(req.Body)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error reading request on camera %d: %s", i, err.Error()), http.StatusFailedDependency)
+			http.Error(w, fmt.Sprintf("Error reading request on camera %d: %s", i, err.Error()), http.StatusInternalServerError)
 			return
 		}
 		frames[i] = resp
@@ -222,7 +222,7 @@ func init() {
 			w.Header().Set("Expires", "0")
 			resp, err := http.Get(relayed)
 			if err != nil {
-				http.Error(w, "Relaying error "+err.Error(), http.StatusExpectationFailed)
+				http.Error(w, "Relaying error "+err.Error(), http.StatusInternalServerError)
 				log.Println("Relaying error: " + err.Error())
 				return
 			}
