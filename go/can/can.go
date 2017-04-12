@@ -58,7 +58,7 @@ var NoCAN bool
 
 func init() {
 	startup.NewTask(1, func() error { //Set up can flag parsing
-		flag.StringVar(&canName, "can", "can0", "Can bus (default: can0)")
+		flag.StringVar(&canName, "can", "/dev/ttyUSB0", "Can bus arduino port (default: /dev/ttyUSB0)")
 		flag.BoolVar(&NoCAN, "nocan", false, "Whether can is disabled")
 		return nil
 	})
