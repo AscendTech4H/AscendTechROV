@@ -5,6 +5,7 @@ uint8_t pins[] = {35,34,31,30,52,51,53,50,29,28,23,22,48,49,40,45};
 
 void setup() {
   Serial.begin(115200);
+  Serial3.begin(115200);
   for(int i=0; i<16; i++) {
     motp[i]=0;
   }
@@ -48,9 +49,9 @@ void setMotor(int mot, int val) {
 int mot = -1;
 void loop() {
   if(mot == -1) {
-    mot = Serial.parseInt();
+    mot = Serial3.parseInt();
   }else{
-    int val = Serial.parseInt();
+    int val = Serial3.parseInt();
     if(val!=-1) {
       setMotor(mot,val);
       mot=-1;
