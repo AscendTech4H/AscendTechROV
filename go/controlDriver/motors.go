@@ -76,11 +76,15 @@ func init() {
 						robot.toprightfront.Set(u)
 					} else {
 						m := rangeMap(rob.Tilt, -90, 90, -255, 255)
-						var f, b uint8 = 0, 0
+						a := m
+						if a < 0 {
+							a *= -1
+						}
+						var f, b uint8 = uint8(a), uint8(a)
 						if m > 0 {
-							f = uint8(m)
+							b = 255 - b
 						} else {
-							b = uint8(-m)
+							f = 255 - f
 						}
 						robot.topleftfront.Set(f)
 						robot.toprightfront.Set(f)
