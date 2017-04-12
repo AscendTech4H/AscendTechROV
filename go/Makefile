@@ -7,7 +7,7 @@ clean:
 	$(MAKE) -C main clean
 
 installdeps:
-	go get github.com/blackjack/webcam github.com/brutella/can github.com/gorilla/websocket
+	go get github.com/blackjack/webcam github.com/brutella/can github.com/gorilla/websocket github.com/tarm/serial
 
 test:
 	$(MAKE) buildmain
