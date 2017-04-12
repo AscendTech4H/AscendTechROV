@@ -73,11 +73,15 @@
 			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('l');">Off</button>
 			<span id="result"></span>
 			<form action="#"><p class="range-field">
-				<input type="range" id="slider" min="-50"max="50" style = "-webkit-appearance: slider-vertical; /* WebKit */
+			<input type="range" id="slider" min="-50"max="50" style = "-webkit-appearance: slider-vertical; /* WebKit */
     width: 5px;
     height: 200px;
     padding: 0 5px;"/>
-			</p></form>
+	<input type="range" id="tilt" min="-90" max="90" style = "-webkit-appearance: slider-horizontal; /* WebKit */
+height: 5px;
+width: 200px;
+padding: 0 5px;"/>
+		</p></form>
 			<div id="Outputxy"> X:0 Y:0 </div>
 			<div id="Outputz"> Z: 0</div>
 
@@ -105,6 +109,10 @@
 		slider.ontouchend = slider.onmouseup = function() {
 			slider.value=0;
 		}
+		var tilt = document.getElementById('tilt');
+		tilt.ontouchend = tilt.onmouseup = function() {
+			tilt.value=0;
+		}
 		var outputxyText = document.getElementById('Outputxy');
 		var outputzText = document.getElementById('Outputz');
 		var camnum = 0;
@@ -121,8 +129,10 @@
 				outputxyText.innerHTML = "X: " + Math.round(joystick.deltaX()) + "Y: " + Math.round(-1*joystick.deltaY());
 			}
 			buttonclick('S'+Math.round(slider.value));
+			buttonclick('!'+Math.round(tilt.value));
 			outputzText.innerHTML = "Z: " + slider.value;
-		}, 1000);
+			outputzText.innerHTML += " T: " + tilt.value;
+		}, 250);
 		document.getElementById("cam").src="/cam/"+camnum+"?"+brk;
 		brk++;
 		document.getElementById("cam").onload = function() {

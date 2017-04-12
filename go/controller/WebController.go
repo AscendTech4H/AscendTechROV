@@ -21,7 +21,7 @@ func init() {
 		return nil
 	})
 	//Web server startup last
-	startup.NewTask(250, func() error {
+	startup.NewTask(254, func() error {
 		log.Println("Starting web controller. . .")
 		go http.ListenAndServe(":8080", nil)
 		return nil
@@ -68,8 +68,8 @@ const (
 
 //Robot contains the controller data
 type Robot struct {
-	Claw, Agar, Laser           bool
-	Forward, Up, Turn, ClawTurn int
+	Claw, Agar, Laser                 bool
+	Forward, Up, Tilt, Turn, ClawTurn int
 }
 
 var r Robot
@@ -126,9 +126,12 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 			r.ClawTurn = STOP
 		case '}':
 			r.ClawTurn = CW
+		case '!':
+			r.Tilt, err = strconv.Atoi(str[1:])
 		default:
 			log.Printf("Ignored unrecognized WebSocket command %s\n", str)
 		}
+		debug.VLog(str)
 		util.UhOh(err)
 		lck.Unlock()
 	}

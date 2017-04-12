@@ -40,6 +40,7 @@ func init() {
 func Start() {
 	log.Println("Initiating startup. . .")
 	for i := uint8(0); i < 255; i++ {
+		log.Printf("Startup level %d", i)
 		for _, t := range tasks {
 			if t.Time == i {
 				util.UhOh(t.Task())

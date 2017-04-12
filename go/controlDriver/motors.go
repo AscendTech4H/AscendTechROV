@@ -55,39 +55,56 @@ func init() {
 		robot.claw.grab = cmdmotor.Motor(can.Sender, motorgrab, motor.Servo)
 		return nil
 	})
-	startup.NewTask(255, func() error {
-		tick := time.NewTicker(time.Second / 5)
-		go func() {
-			for range tick.C {
-				rob := controller.RobotState()
-				l, r := motorCalcFwd(rob.Forward, rob.Turn)
-				a := uint8(rangeMap(r, -127, 127, 0, 255))
-				b := uint8(rangeMap(l, -127, 127, 0, 255))
-				robot.rightfront.Set(a)
-				robot.rightback.Set(a)
-				robot.leftfront.Set(b)
-				robot.leftback.Set(b)
-				robot.topleftback.Set(uint8(rob.Up))
-				robot.topleftfront.Set(uint8(rob.Up))
-				robot.topleftback.Set(uint8(rob.Up))
-				robot.toprightback.Set(uint8(rob.Up))
-				c := uint8(0)
-				switch rob.ClawTurn {
-				case controller.CCW:
-					c = 0
-				case controller.CW:
-					c = 255
-				case controller.STOP:
-					c = 127
+	startup.NewTask(253, func() error {
+		if can.Sender != nil {
+			tick := time.NewTicker(time.Second / 5)
+			go func() {
+				for range tick.C {
+					rob := controller.RobotState()
+					l, r := motorCalcFwd(rob.Forward, rob.Turn)
+					a := uint8(rangeMap(r, -127, 127, 0, 255))
+					b := uint8(rangeMap(l, -127, 127, 0, 255))
+					robot.rightfront.Set(a)
+					robot.rightback.Set(a)
+					robot.leftfront.Set(b)
+					robot.leftback.Set(b)
+					if rob.Tilt != 0 {
+						u := uint8(rangeMap(rob.Up, -50, 50, 0, 255))
+						robot.topleftback.Set(u)
+						robot.topleftfront.Set(u)
+						robot.toprightback.Set(u)
+						robot.toprightfront.Set(u)
+					} else {
+						m := rangeMap(rob.Tilt, -90, 90, -255, 255)
+						var f, b uint8 = 0, 0
+						if m > 0 {
+							f = uint8(m)
+						} else {
+							b = uint8(-m)
+						}
+						robot.topleftfront.Set(f)
+						robot.toprightfront.Set(f)
+						robot.topleftback.Set(b)
+						robot.toprightback.Set(b)
+					}
+					c := uint8(0)
+					switch rob.ClawTurn {
+					case controller.CCW:
+						c = 0
+					case controller.CW:
+						c = 255
+					case controller.STOP:
+						c = 127
+					}
+					robot.claw.roll.Set(c)
+					if rob.Claw {
+						robot.claw.grab.Set(180)
+					} else {
+						robot.claw.grab.Set(90)
+					}
 				}
-				robot.claw.roll.Set(c)
-				if rob.Claw {
-					robot.claw.grab.Set(180)
-				} else {
-					robot.claw.grab.Set(90)
-				}
-			}
-		}()
+			}()
+		}
 		return nil
 	})
 }

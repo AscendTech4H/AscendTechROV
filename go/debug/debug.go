@@ -2,6 +2,7 @@ package debug
 
 import (
 	"flag"
+	"fmt"
 	"html"
 	"log"
 	"net/http"
@@ -42,6 +43,7 @@ func (l *logBuf) Write(b []byte) (int, error) {
 	}
 	l.outs = re
 	l.buf = append(l.buf, b...)
+	fmt.Print(string(b))
 	return len(b), nil
 }
 func (l *logBuf) Add(w http.ResponseWriter) chan struct{} {
