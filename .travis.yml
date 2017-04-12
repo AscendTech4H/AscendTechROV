@@ -1,8 +1,9 @@
 language: c
+go:
+    - 1.7.x
 addons:
   apt:
     packages:
-    - golang
     - avr-libc
 install:
   - echo "Installing stuff. . . "
