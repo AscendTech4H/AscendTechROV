@@ -4,18 +4,20 @@ package can
 import (
 	"bufio"
 	"flag"
+	"io"
+	"log"
 	"sync"
 
 	"../commander"
 	"../startup"
 	"../util"
 
-	"github.com/tarm/serial"
+	"github.com/huin/goserial"
 )
 
 //CAN bus
 type CAN struct {
-	bus  *serial.Port
+	bus  io.ReadWriteCloser
 	lck  sync.Mutex
 	scan *bufio.Scanner
 }
@@ -23,7 +25,7 @@ type CAN struct {
 //SetupCAN sets up a CAN bus
 func SetupCAN(port string) *CAN {
 	c := new(CAN)
-	bus, err := serial.OpenPort(&serial.Config{
+	bus, err := goserial.OpenPort(&goserial.Config{
 		Name: port,
 		Baud: 115200,
 	})
@@ -38,6 +40,10 @@ func (c *CAN) SendMessage(m Message) {
 	c.lck.Lock()
 	defer c.lck.Unlock()
 	_, err := c.bus.Write([]byte(m))
+	if !c.scan.Scan() {
+		panic("It no wirk")
+	}
+	log.Println(c.scan.Text())
 	util.UhOh(err)
 }
 
@@ -58,7 +64,7 @@ var NoCAN bool
 
 func init() {
 	startup.NewTask(1, func() error { //Set up can flag parsing
-		flag.StringVar(&canName, "can", "/dev/ttyUSB0", "Can bus arduino port (default: /dev/ttyUSB0)")
+		flag.StringVar(&canName, "can", "/dev/ttyACM0", "Can bus arduino port (default: /dev/ttyUSB0)")
 		flag.BoolVar(&NoCAN, "nocan", false, "Whether can is disabled")
 		return nil
 	})
