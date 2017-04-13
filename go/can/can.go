@@ -22,7 +22,7 @@ import (
 type CAN struct {
 	bus  io.ReadWriteCloser
 	lck  sync.Mutex
-	scan *bufio.Scanner
+	scan *bufio.Reader
 }
 
 //SetupCAN sets up a CAN bus
@@ -38,12 +38,13 @@ func SetupCAN(port string) *CAN {
 	c.bus = bus
 	o, err := n.StdoutPipe()
 	util.UhOh(err)
-	go util.UhOh(n.Start())
+	util.UhOh(n.Start())
 	debug.VLog("Um")
-	c.scan = bufio.NewScanner(o)
+	c.scan = bufio.NewReader(o)
 	debug.VLog("Buffing")
-	c.scan.Scan()
-	log.Println(c.scan.Text())
+	l, _, err := c.scan.ReadLine()
+	util.UhOh(err)
+	log.Println(string(l))
 	return c
 }
 
@@ -55,10 +56,10 @@ func (c *CAN) SendMessage(m Message) {
 		debug.VLog(fmt.Sprintf("%d", v))
 	}
 	_, err := c.bus.Write([]byte(m))
-	if !c.scan.Scan() {
-		panic("It no wirk")
-	}
-	log.Println(c.scan.Text())
+	util.UhOh(err)
+	l, _, err := c.scan.ReadLine()
+	util.UhOh(err)
+	log.Println(string(l))
 	util.UhOh(err)
 }
 
