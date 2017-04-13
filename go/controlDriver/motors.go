@@ -7,6 +7,7 @@ import (
 
 	"../can"
 	"../controller"
+	"../debug"
 	"../motor"
 	"../motor/cmdmotor"
 	"../startup"
@@ -60,6 +61,7 @@ func init() {
 			tick := time.NewTicker(time.Second / 5)
 			go func() {
 				for range tick.C {
+					debug.VLog("Motor update")
 					rob := controller.RobotState()
 					l, r := motorCalcFwd(rob.Forward, rob.Turn)
 					a := uint8(rangeMap(r, -127, 127, 0, 255))
