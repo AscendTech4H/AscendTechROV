@@ -36,6 +36,7 @@ func SetupCAN(port string) *CAN {
 	debug.VLog("Start cat")
 	n := exec.Command("/bin/cat", port)
 	c.bus = bus
+	n.Wait()
 	o, err := n.StdoutPipe()
 	util.UhOh(err)
 	util.UhOh(n.Start())
@@ -84,7 +85,7 @@ func init() {
 		flag.BoolVar(&NoCAN, "nocan", false, "Whether can is disabled")
 		return nil
 	})
-	startup.NewTask(100, func() error {
+	startup.NewTask(20, func() error {
 		if !NoCAN {
 			Bus = SetupCAN(canName)
 			Sender = Bus.AsSender()
