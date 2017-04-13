@@ -15,10 +15,8 @@ import (
 
 //Add more motors when I know which they are
 var robot struct {
-	leftback, rightback         motor.Motor
-	leftfront, rightfront       motor.Motor
-	topleftfront, toprightfront motor.Motor
-	topleftback, toprightback   motor.Motor
+	left, right       motor.Motor
+	topfront, topback motor.Motor
 	claw                        struct {
 		roll motor.Motor
 		grab motor.Motor
@@ -28,29 +26,21 @@ var robot struct {
 //Motor IDs
 //Note: put them in index order for iota to assign indexes (stating with 0)
 const (
-	motorlb = iota
-	motorrb
-	motorlf
-	motorrf
-	motortlf
-	motortrf
-	motortlb
-	motortrb
+	motorl = iota
+	motorr
+	motortf
+	motortb
 	motorroll
 	motorgrab
 )
 
 func init() {
 	startup.NewTask(150, func() error {
-		robot.leftback = cmdmotor.Motor(can.Sender, motorlb, motor.DC)
-		robot.rightback = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
-		robot.leftfront = cmdmotor.Motor(can.Sender, motorlb, motor.DC)
-		robot.rightfront = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
+		robot.left = cmdmotor.Motor(can.Sender, motorl, motor.DC)
+		robot.right = cmdmotor.Motor(can.Sender, motorr, motor.DC)
 
-		robot.topleftfront = cmdmotor.Motor(can.Sender, motorlf, motor.DC)
-		robot.toprightfront = cmdmotor.Motor(can.Sender, motorrf, motor.DC)
-		robot.topleftback = cmdmotor.Motor(can.Sender, motorlb, motor.DC)
-		robot.toprightback = cmdmotor.Motor(can.Sender, motorrb, motor.DC)
+		robot.topfront = cmdmotor.Motor(can.Sender, motortf, motor.DC)
+		robot.topback = cmdmotor.Motor(can.Sender, motortb, motor.DC)
 
 		robot.claw.roll = cmdmotor.Motor(can.Sender, motorroll, motor.DC)
 		robot.claw.grab = cmdmotor.Motor(can.Sender, motorgrab, motor.Servo)
@@ -66,16 +56,12 @@ func init() {
 					l, r := motorCalcFwd(rob.Forward, rob.Turn)
 					a := uint8(rangeMap(r, -127, 127, 0, 255))
 					b := uint8(rangeMap(l, -127, 127, 0, 255))
-					robot.rightfront.Set(a)
-					robot.rightback.Set(a)
-					robot.leftfront.Set(b)
-					robot.leftback.Set(b)
+					robot.right.Set(a)
+					robot.left.Set(b)
 					if rob.Tilt != 0 {
 						u := uint8(rangeMap(rob.Up, -50, 50, 0, 255))
-						robot.topleftback.Set(u)
-						robot.topleftfront.Set(u)
-						robot.toprightback.Set(u)
-						robot.toprightfront.Set(u)
+						robot.topback.Set(u)
+						robot.topfront.Set(u)
 					} else {
 						m := rangeMap(rob.Tilt, -90, 90, -255, 255)
 						a := m
@@ -88,10 +74,8 @@ func init() {
 						} else {
 							f = 255 - f
 						}
-						robot.topleftfront.Set(f)
-						robot.toprightfront.Set(f)
-						robot.topleftback.Set(b)
-						robot.toprightback.Set(b)
+						robot.topfront.Set(f)
+						robot.topback.Set(b)
 					}
 					c := uint8(0)
 					switch rob.ClawTurn {
