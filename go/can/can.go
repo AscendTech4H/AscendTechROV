@@ -58,9 +58,11 @@ func (c *CAN) SendMessage(m Message) {
 	}
 	_, err := c.bus.Write([]byte(m))
 	util.UhOh(err)
-	l, _, err := c.scan.ReadLine()
-	util.UhOh(err)
-	log.Println(string(l))
+	for i := 0; i < len(m); i++ {
+		l, _, er := c.scan.ReadLine()
+		util.UhOh(er)
+		log.Println(string(l))
+	}
 	util.UhOh(err)
 }
 
