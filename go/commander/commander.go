@@ -10,7 +10,7 @@ type Command interface {
 //Serialize serializes a command
 func Serialize(c Command) []byte {
 	arg := c.Arguments()
-	o := make([]byte, len(arg))
+	o := make([]byte, len(arg)+1)
 	o[0] = c.ID()
 	for i, v := range arg {
 		o[i+1] = v
