@@ -2,8 +2,11 @@
 package cmdmotor
 
 import (
+	"fmt"
+
 	".."
 	"../../commander"
+	"../../debug"
 )
 
 type cmdmotor struct {
@@ -18,6 +21,7 @@ func (m cmdmotor) GetMotorType() motor.Type {
 }
 
 func (m cmdmotor) Set(speed uint8) {
+	debug.VLog(fmt.Sprintf("Set motor %d to %d", m.index, speed))
 	m.sender.Send(commander.SetMotor(m.index, speed))
 	m.state = speed
 }
