@@ -53,7 +53,7 @@ func SetupCAN(port string) *CAN {
 func (c *CAN) SendMessage(m Message) {
 	c.lck.Lock()
 	defer c.lck.Unlock()
-	for v := range m {
+	for _, v := range m {
 		debug.VLog(fmt.Sprintf("%d", v))
 	}
 	_, err := c.bus.Write([]byte(m))
