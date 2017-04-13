@@ -38,7 +38,8 @@ func SetupCAN(port string) *CAN {
 	c.bus = bus
 	o, err := n.StdoutPipe()
 	util.UhOh(err)
-	util.UhOh(n.Start())
+	go util.UhOh(n.Start())
+	debug.VLog("Um")
 	c.scan = bufio.NewScanner(o)
 	debug.VLog("Buffing")
 	c.scan.Scan()
