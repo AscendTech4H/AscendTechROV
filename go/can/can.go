@@ -33,7 +33,7 @@ func SetupCAN(port string) *CAN {
 		Baud: 115200,
 	})
 	util.UhOh(err)
-	n := exec.Command("cat", port)
+	n := exec.Command("/bin/cat", port)
 	c.bus = bus
 	o, err := n.StdoutPipe()
 	util.UhOh(err)
