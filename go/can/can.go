@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os/exec"
 	"sync"
 
 	"../commander"
@@ -32,8 +33,13 @@ func SetupCAN(port string) *CAN {
 		Baud: 115200,
 	})
 	util.UhOh(err)
+	n := exec.Command("cat", port)
 	c.bus = bus
-	c.scan = bufio.NewScanner(bus)
+	o, err := n.StdoutPipe()
+	util.UhOh(err)
+	c.scan = bufio.NewScanner(o)
+	c.scan.Scan()
+	log.Println(c.scan.Text())
 	return c
 }
 
