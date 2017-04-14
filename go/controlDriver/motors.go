@@ -2,22 +2,26 @@
 package controlDriver
 
 import (
+	"log"
 	"math"
+	"os"
 	"time"
 
 	"../can"
+	"../commander"
 	"../controller"
 	"../debug"
 	"../motor"
 	"../motor/cmdmotor"
 	"../startup"
+	"../util"
 )
 
 //Add more motors when I know which they are
 var robot struct {
 	left, right       motor.Motor
 	topfront, topback motor.Motor
-	claw                        struct {
+	claw              struct {
 		roll motor.Motor
 		grab motor.Motor
 	}
@@ -26,10 +30,10 @@ var robot struct {
 //Motor IDs
 //Note: put them in index order for iota to assign indexes (stating with 0)
 const (
-	motorl = iota
-	motorr
-	motortf
+	motortf = iota
 	motortb
+	motorl
+	motorr
 	motorroll
 	motorgrab
 )
@@ -47,6 +51,9 @@ func init() {
 		return nil
 	})
 	startup.NewTask(253, func() error {
+		f, err := os.Create("debug.log")
+		util.UhOh(err)
+		q := log.New(f, "meme", 0)
 		if can.Sender != nil {
 			tick := time.NewTicker(time.Second / 5)
 			go func() {
@@ -54,11 +61,14 @@ func init() {
 					debug.VLog("Motor update")
 					rob := controller.RobotState()
 					l, r := motorCalcFwd(rob.Forward, rob.Turn)
-					a := uint8(rangeMap(r, -127, 127, 0, 255))
-					b := uint8(rangeMap(l, -127, 127, 0, 255))
+					log.Println(l, r)
+					//a := uint8(rangeMap(r, -127, 127, 0, 255))
+					//b := uint8(rangeMap(l, -127, 127, 0, 255))
+					a := uint8(r)
+					b := uint8(l)
 					robot.right.Set(a)
 					robot.left.Set(b)
-					if rob.Tilt != 0 {
+					if rob.Tilt == 0 {
 						u := uint8(rangeMap(rob.Up, -50, 50, 0, 255))
 						robot.topback.Set(u)
 						robot.topfront.Set(u)
@@ -80,18 +90,20 @@ func init() {
 					c := uint8(0)
 					switch rob.ClawTurn {
 					case controller.CCW:
-						c = 0
+						c = 127 - 50
 					case controller.CW:
-						c = 255
+						c = 127 + 50
 					case controller.STOP:
 						c = 127
 					}
 					robot.claw.roll.Set(c)
 					if rob.Claw {
-						robot.claw.grab.Set(180)
-					} else {
 						robot.claw.grab.Set(90)
+					} else {
+						robot.claw.grab.Set(180)
 					}
+					can.Bus.AsSender().Send(commander.SetLaser(rob.Laser))
+					q.Println([]uint8{robot.left.State(), robot.right.State(), robot.topback.State(), robot.topfront.State(), robot.claw.grab.State(), robot.claw.roll.State()})
 				}
 			}()
 		}
@@ -103,18 +115,19 @@ func rangeMap(in, inmin, inmax, outmin, outmax int) int {
 	return (((in - inmin) * (outmax - outmin)) / (inmax - inmin)) + outmin
 }
 
-func motorCalcFwd(forward int, turn int) (l, r int) {
-	ang := math.Atan(float64(forward) / float64(turn))
-	mag := math.Sqrt(float64((forward * forward) + (turn * turn)))
-	if turn < 0 {
-		l = int(mag * math.Sin(ang))
-		r = int(mag)
-	} else if turn > 0 {
-		l = int(mag)
-		r = int(mag * math.Sin(ang))
-	} else {
-		l = int(mag)
-		r = int(mag)
+func motorCalcFwd(X, Y int) (l, r int) {
+	x := float64(X)
+	y := float64(Y)
+	ang := math.Atan2(y, x) - math.Pi/4
+	mag := math.Hypot(x/50, y/50)
+	r = int(mag*math.Cos(ang)*127.5 + 127.5)
+	if r == 256 {
+		r = r - 1
+	}
+	ang = math.Atan2(y, x) - 3*math.Pi/4
+	l = int(mag*math.Cos(ang)*127.5 + 127.5)
+	if l == 256 {
+		l = l - 1
 	}
 	return
 }

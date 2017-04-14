@@ -4,25 +4,48 @@ package can
 import (
 	"bufio"
 	"flag"
-	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
-	"os/exec"
 	"sync"
+	"time"
 
 	"../commander"
-	"../debug"
 	"../startup"
 	"../util"
 
 	"github.com/huin/goserial"
 )
 
+type shmeh struct {
+	s chan []byte
+	b []byte
+}
+
+func (s *shmeh) Read(b []byte) (n int, err error) {
+	var d []byte
+	if s.b == nil {
+		d = <-s.s
+	} else {
+		d = s.b
+		s.b = nil
+	}
+	for i, v := range d {
+		if i > len(b) {
+			s.b = d[len(b):]
+			return len(b), nil
+		}
+		b[i] = v
+	}
+	return len(d), nil
+}
+
 //CAN bus
 type CAN struct {
 	bus  io.ReadWriteCloser
 	lck  sync.Mutex
-	scan *bufio.Reader
+	rch  *shmeh
+	scan *bufio.Scanner
 }
 
 //SetupCAN sets up a CAN bus
@@ -33,19 +56,23 @@ func SetupCAN(port string) *CAN {
 		Baud: 115200,
 	})
 	util.UhOh(err)
-	debug.VLog("Start cat")
-	n := exec.Command("/bin/cat", port)
 	c.bus = bus
-	n.Wait()
-	o, err := n.StdoutPipe()
-	util.UhOh(err)
-	util.UhOh(n.Start())
-	debug.VLog("Um")
-	c.scan = bufio.NewReader(o)
-	debug.VLog("Buffing")
-	l, _, err := c.scan.ReadLine()
-	util.UhOh(err)
-	log.Println(string(l))
+	c.rch = new(shmeh)
+	c.rch.s = make(chan []byte)
+	go func() {
+		t := time.Tick(time.Second / 10)
+		for {
+			<-t
+			b, e := ioutil.ReadFile(port)
+			util.UhOh(e)
+			if len(b) > 0 {
+				c.rch.s <- b
+			}
+		}
+	}()
+	c.scan = bufio.NewScanner(c.rch)
+	c.scan.Scan()
+	log.Println(c.scan.Text())
 	return c
 }
 
@@ -53,15 +80,17 @@ func SetupCAN(port string) *CAN {
 func (c *CAN) SendMessage(m Message) {
 	c.lck.Lock()
 	defer c.lck.Unlock()
+	log.Println(m)
+	/*s := ""
 	for _, v := range m {
-		debug.VLog(fmt.Sprintf("%d", v))
+		s += fmt.Sprintln(uint(v) + 1)
 	}
+	log.Println(s)*/
 	_, err := c.bus.Write([]byte(m))
 	util.UhOh(err)
 	for i := 0; i < len(m); i++ {
-		l, _, er := c.scan.ReadLine()
-		util.UhOh(er)
-		log.Println(string(l))
+		c.scan.Scan()
+		log.Println(c.scan.Text())
 	}
 	util.UhOh(err)
 }

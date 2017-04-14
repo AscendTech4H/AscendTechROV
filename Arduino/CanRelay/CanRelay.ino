@@ -1,28 +1,19 @@
-#include <mcp_can.h>
-#include <mcp_can_dfs.h>
+#include <CustomSoftwareSerial.h>
 
-MCP_CAN CAN0(24);
+CustomSoftwareSerial* Serial3;
 
 void setup() {
+  Serial3 = new CustomSoftwareSerial(10,11);
   Serial.begin(115200);
-  Serial.print("Init: ");
-  Serial.println(CAN0.begin(MCP_ANY, CAN_125KBPS, MCP_8MHZ) == CAN_OK); //Print success or faliure
-  CAN0.setMode(MCP_NORMAL);
+  Serial3->begin(300, CSERIAL_8O2);
+  Serial.println("Init");
 }
 
 void loop() {
-  int len=0;
-  while(len == 0) {
-    len = Serial.parseInt();
+  int i = Serial.read();
+  if(i != -1) {
+    Serial3->write(i);
+    Serial.print("Write ");
+    Serial.println(i);
   }
-  byte msg[len];
-  for(int n=0; n<len;) {
-    int scan = Serial.parseInt();
-    if(scan != 0) {
-      msg[n]=scan-1;
-      n++;
-    }
-  }
-  Serial.print("Send: ");
-  Serial.println(CAN0.sendMsgBuf(0,len,(byte*)&msg));
 }

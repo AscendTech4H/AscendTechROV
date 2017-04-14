@@ -1,3 +1,4 @@
 topSide.o
 static
-out.tar.xz
+debug.log
+camrelay.o

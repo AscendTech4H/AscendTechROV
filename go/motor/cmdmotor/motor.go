@@ -16,11 +16,11 @@ type cmdmotor struct {
 	state     uint8
 }
 
-func (m cmdmotor) GetMotorType() motor.Type {
+func (m *cmdmotor) GetMotorType() motor.Type {
 	return m.motorType
 }
 
-func (m cmdmotor) Set(speed uint8) {
+func (m *cmdmotor) Set(speed uint8) {
 	debug.VLog(fmt.Sprintf("Set motor %d to %d", m.index, speed))
 	if m.state != speed {
 		m.sender.Send(commander.SetMotor(m.index, speed))
@@ -28,13 +28,13 @@ func (m cmdmotor) Set(speed uint8) {
 	m.state = speed
 }
 
-func (m cmdmotor) State() uint8 {
+func (m *cmdmotor) State() uint8 {
 	return m.state
 }
 
 //Motor creates a new motor with the command sender
 func Motor(s commander.Sender, index uint8, t motor.Type) motor.Motor {
-	m := cmdmotor{}
+	m := new(cmdmotor)
 	m.sender = s
 	m.index = index
 	m.motorType = t

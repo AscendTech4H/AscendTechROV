@@ -68,7 +68,7 @@ const (
 
 //Robot contains the controller data
 type Robot struct {
-	Claw, Agar, Laser                 bool
+	Claw, Laser                       bool
 	Forward, Up, Tilt, Turn, ClawTurn int
 }
 
@@ -106,10 +106,6 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 			r.Claw = true
 		case 'c':
 			r.Claw = false
-		case 'A':
-			r.Agar = true
-		case 'a':
-			r.Agar = false
 		case 'L':
 			r.Laser = true
 		case 'l':
@@ -141,7 +137,6 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 func RobotState() (rob Robot) {
 	lck.RLock()         //Set a read lock
 	defer lck.RUnlock() //Unlock on exit
-	rob.Agar = r.Agar
 	rob.Claw = r.Claw
 	rob.Forward = r.Forward
 	rob.Laser = r.Laser

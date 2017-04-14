@@ -1,17 +1,17 @@
-all: out.tar.xz
+all: topSide.o camrelay.o static
 
 topSide.o:
 	cp ../go/main/main topSide.o
+
+camrelay.o:
+	cp ../go/camrelay/camrelay camrelay.o
 
 static:
 	cp -r ../static static
 	rm static/Makefile static/.gitignore
 
-out.tar.xz: topSide.o static
-	tar -cvf out.tar.xz topSide.o static
-
 clean:
-	rm -r out.tar.xz topSide.o static
+	rm -r topSide.o static camrelay.o
 
 makeall:
 	$(MAKE) -C ..

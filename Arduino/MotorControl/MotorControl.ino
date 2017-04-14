@@ -1,44 +1,49 @@
-#include <MsTimer2.h>
-
-uint8_t motp[16];
-uint8_t pins[] = {35,34,31,30,52,51,53,50,29,28,23,22,48,49,40,45};
+uint8_t pwm[] = {2,3,4,5};
+uint8_t dir[] = {22,23,24,25,26,27,28,29};
 
 void setup() {
-  Serial.begin(115200);
-  Serial3.begin(115200);
-  for(int i=0; i<16; i++) {
-    motp[i]=0;
+  Serial.begin(115200);           //Debug (USB)
+  Serial2.begin(9600);          //Teensy
+  Serial3.begin(300,SERIAL_8O2);  //Tether
+  for(int i=0; i<4; i++) {
+    analogWrite(pwm[i],0);
   }
-  MsTimer2::set(1,motors); //Run motor update every 1 ms
-  MsTimer2::start();
+  for(int i=0; i<8; i++) {
+    digitalWrite(dir[i],LOW); //Everything low
+  }
   Serial.println("Started.");
 }
 
-uint8_t cnt = 0;
-void motors() {
-  for(int i=0; i<16; i++) {
-    digitalWrite(pins[i],motp[i]>=cnt);
-  }
-  cnt++;
-  Serial.println("motup");
-}
-
 void setMotor(int mot, int val) {
-  if(mot>7) {
+  int aval = val;
+  if(val<0){
+    aval=-val;
+  }
+  aval*=2;
+  if(aval==1) {
+    aval = val = 0;
+  }
+  if(aval>255) {
+    aval=255;
+  }
+  mot--;
+  if((mot>3)||(mot<0)) {
     Serial.println("ERROR: invalid motor");
     return;
   }
-  int mval = map(val,0,255,-255,255);
   int a,b;
-  if(mval>0) {
-    a=mval;
-    b=0;
+  if(val>0) {
+    a=HIGH;
+    b=LOW;
+  }else if(val<0){
+    a=LOW;
+    b=HIGH;
   }else{
-    a=0;
-    b=-mval;
+    a=b=LOW;
   }
-  motp[mot*2]=a;
-  motp[(mot*2)+1]=b;
+  digitalWrite(dir[mot*2],a);
+  digitalWrite(dir[(mot*2)+1],b);
+  analogWrite(pwm[mot],aval);
   Serial.print("Set motor ");
   Serial.print(mot);
   Serial.print(" to ");
@@ -46,15 +51,20 @@ void setMotor(int mot, int val) {
   Serial.println(".");
 }
 
-int mot = -1;
+int mot = 0;
 void loop() {
-  if(mot == -1) {
-    mot = Serial3.parseInt();
+  if(mot == 0) {
+    mot = Serial2.parseInt();
   }else{
-    int val = Serial3.parseInt();
-    if(val!=-1) {
+    int val = Serial2.parseInt();
+    if(val!=0) {
       setMotor(mot,val);
-      mot=-1;
+      mot=0;
     }
+  }
+  while(Serial3.available()>0) {
+    int rd = Serial3.read();
+    Serial.println(rd);
+    Serial2.write(rd);
   }
 }
