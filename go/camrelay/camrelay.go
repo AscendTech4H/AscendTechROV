@@ -23,6 +23,7 @@ var relayed [3]string
 func init() {
 	flag.StringVar(&(relayed[0]), "cam0", "null", "Camera connection 0")
 	flag.StringVar(&(relayed[1]), "cam1", "null", "Camera connection 1")
+	flag.StringVar(&(relayed[2]), "cam2", "null", "Camera connection 2")
 	flag.IntVar(&quality, "jpg", 10, "JPEG quality")
 	flag.Parse()
 	Cams = make([]*Cam, len(relayed))
