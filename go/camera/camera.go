@@ -20,7 +20,7 @@ func multiCamHandler(w http.ResponseWriter, r *http.Request) {
 	//Retrieve frames
 	var frames [3][]byte
 	for i := 0; i < 3; i++ {
-		req, err := http.Get(fmt.Sprintf("localhost:8080/cam/%d", i))
+		req, err := http.Get(fmt.Sprintf("http://localhost:8080/cam/%d", i))
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Camera request error on camera %d: %s", i, err.Error()), http.StatusInternalServerError)
 			return
