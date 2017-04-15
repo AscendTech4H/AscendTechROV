@@ -55,8 +55,8 @@
 	<div class="row">
 	<div class="col s6">
 			<p>Camera Switch</p>
-			<button class="waves-effect waves-light btn teal accent-3" onclick = "switchCam(1);">&larr;</button>
-			<button class="waves-effect waves-light btn teal accent-3" onclick = "switchCam(-1);">&rarr;</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "switchCam(-1);">&larr;</button>
+			<button class="waves-effect waves-light btn teal accent-3" onclick = "switchCam(1);">&rarr;</button>
 			<p>Claw</p>
 			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('C');">Open</button>
 			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('c');">Close</button>
@@ -70,6 +70,8 @@
 			<p>Laser</p>
 			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('L');">On</button>
 			<button class="waves-effect waves-light btn teal accent-3" onclick = "buttonclick('l');">Off</button>
+			<p></p>
+			<a href="/cam/all"><button class="waves-effect waves-light btn teal accent-3">Download Cameras</button></a>
 			<span id="result"></span>
 
 	</div>
@@ -84,8 +86,8 @@
 		var camnum = 0;
 		function switchCam(n) {
 			camnum+=n;
-			if(n>2){n=0;}
-			if(n<0){n=2;}
+			if(camnum>2){camnum=0;}
+			if(camnum<0){camnum=2;}
 		}
 		var brk = 0;
 		document.getElementById("cam").src="/cam/"+camnum+"?"+brk;
