@@ -1,3 +1,4 @@
+//Package startup provides a numerically ordered startup sequence
 package startup
 
 import (
