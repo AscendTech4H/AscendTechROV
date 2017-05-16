@@ -1,3 +1,4 @@
+//Package main is where startup is initiated
 package main
 
 import (
