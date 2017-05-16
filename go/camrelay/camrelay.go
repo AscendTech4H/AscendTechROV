@@ -1,3 +1,4 @@
+//Package camrelay relays cameras over HTTP
 package main
 
 import (
