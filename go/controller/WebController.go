@@ -1,3 +1,4 @@
+//Package controller contains the web server for the controller
 package controller
 
 import (
