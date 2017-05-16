@@ -1,3 +1,4 @@
+//Package camera handles the camera processing
 package camera
 
 import (
