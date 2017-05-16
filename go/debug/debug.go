@@ -1,3 +1,4 @@
+//Package debug is used for debugging the robot (via HTML5 SSE or log output)
 package debug
 
 import (
