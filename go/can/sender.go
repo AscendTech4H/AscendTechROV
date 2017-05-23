@@ -1,7 +1,7 @@
 package can
 
 import (
-	"../commander"
+	"github.com/AscendTech4H/AscendTechROV/go/commander"
 )
 
 type canSender struct {
