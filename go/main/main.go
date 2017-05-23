@@ -2,8 +2,8 @@
 package main
 
 import (
-	_ ".."
-	"../startup"
+	_ "github.com/AscendTech4H/AscendTechROV/go"
+	"github.com/AscendTech4H/AscendTechROV/go/startup"
 )
 
 func main() {
