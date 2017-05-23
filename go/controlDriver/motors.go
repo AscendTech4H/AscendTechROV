@@ -7,14 +7,14 @@ import (
 	"os"
 	"time"
 
-	"../can"
-	"../commander"
-	"../controller"
-	"../debug"
-	"../motor"
-	"../motor/cmdmotor"
-	"../startup"
-	"../util"
+	"github.com/AscendTech4H/AscendTechROV/go/can"
+	"github.com/AscendTech4H/AscendTechROV/go/commander"
+	"github.com/AscendTech4H/AscendTechROV/go/controller"
+	"github.com/AscendTech4H/AscendTechROV/go/debug"
+	"github.com/AscendTech4H/AscendTechROV/go/motor"
+	"github.com/AscendTech4H/AscendTechROV/go/motor/cmdmotor"
+	"github.com/AscendTech4H/AscendTechROV/go/startup"
+	"github.com/AscendTech4H/AscendTechROV/go/util"
 )
 
 //Add more motors when I know which they are
