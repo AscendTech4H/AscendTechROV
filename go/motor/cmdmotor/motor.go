@@ -4,9 +4,9 @@ package cmdmotor
 import (
 	"fmt"
 
-	".."
-	"../../commander"
-	"../../debug"
+	"github.com/AscendTech4H/AscendTechROV/go/motor"
+	"github.com/AscendTech4H/AscendTechROV/go/commander"
+	"github.com/AscendTech4H/AscendTechROV/go/debug"
 )
 
 type cmdmotor struct {
