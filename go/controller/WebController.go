@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"sync"
 
-	"../debug"
-	"../startup"
-	"../util"
+	"github.com/AscendTech4H/AscendTechROV/go/debug"
+	"github.com/AscendTech4H/AscendTechROV/go/startup"
+	"github.com/AscendTech4H/AscendTechROV/go/util"
 
 	"github.com/gorilla/websocket"
 )
