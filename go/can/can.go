@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"../commander"
-	"../startup"
-	"../util"
+	"github.com/AscendTech4H/AscendTechROV/go/commander"
+	"github.com/AscendTech4H/AscendTechROV/go/startup"
+	"github.com/AscendTech4H/AscendTechROV/go/util"
 
 	"github.com/huin/goserial"
 )
