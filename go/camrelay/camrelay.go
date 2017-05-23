@@ -16,7 +16,7 @@ import (
 
 	"github.com/blackjack/webcam"
 
-	"../util"
+	"github.com/AscendTech4H/AscendTechROV/go/util"
 )
 
 var relayed [3]string
