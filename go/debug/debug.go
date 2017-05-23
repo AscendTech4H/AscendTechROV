@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	"../startup"
+	"github.com/AscendTech4H/AscendTechROV/go/startup"
 )
 
 //Verbose indicates whether verbose debugging is enabled
