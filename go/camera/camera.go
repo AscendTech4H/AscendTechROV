@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"../startup"
+	"github.com/AscendTech4H/AscendTechROV/go/startup"
 )
 
 var relayed [3]string
