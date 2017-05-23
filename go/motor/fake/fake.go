@@ -4,7 +4,7 @@ package fake
 import (
 	"log"
 
-	"../../motor"
+	"github.com/AscendTech4H/AscendTechROV/go/motor"
 )
 
 type fakemotor struct {
