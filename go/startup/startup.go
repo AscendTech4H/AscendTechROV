@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	"../util"
+	"github.com/AscendTech4H/AscendTechROV/go/util"
 )
 
 //Task represents a task to be run on startup
