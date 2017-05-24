@@ -13,6 +13,9 @@ static:
 clean:
 	rm -r topSide.o static camrelay.o
 
+gopath:
+	mkdir gopath
+
 makeall:
 	$(MAKE) -C ..
 
