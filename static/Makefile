@@ -12,6 +12,6 @@ virtualjoystick.js:
 	curl https://raw.githubusercontent.com/Andrew-Parry/virtualjoystick.js/master/virtualjoystick.js > virtualjoystick.js
 
 clean:
-	rm materialize.css materialize.js virtualjoystick.js
+	rm -f materialize.css materialize.js virtualjoystick.js
 
 test: all

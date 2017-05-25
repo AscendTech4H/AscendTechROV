@@ -6,7 +6,7 @@ buildstatic:
 buildgo:
 	$(MAKE) -C go all
 
-clean: cleanstatic cleango cleanout
+clean: cleanstatic cleanout
 
 cleanstatic:
 	$(MAKE) -C static clean
@@ -21,5 +21,5 @@ test:
 	$(MAKE) -C static test
 	$(MAKE) -C go test
 
-buildout: buildstatic buildgo
+buildout: buildstatic
 	$(MAKE) -C out all

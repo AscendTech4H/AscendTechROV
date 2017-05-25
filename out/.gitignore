@@ -1,4 +1,5 @@
-topSide.o
+gopath
 static
-debug.log
 camrelay.o
+topSide.o
+debug.log
