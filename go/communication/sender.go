@@ -4,17 +4,17 @@ import (
 	"github.com/AscendTech4H/AscendTechROV/go/commander"
 )
 
-type canSender struct {
-	bus *CAN
+type serialSender struct {
+	bus *Serial
 }
 
-func (s canSender) Send(c commander.Command) {
+func (s serialSender) Send(c commander.Command) {
 	s.bus.SendMessage(Message(commander.Serialize(c)))
 }
 
 //AsSender returns a command sender for this CAN bus
-func (c *CAN) AsSender() commander.Sender {
-	s := canSender{}
+func (c *Serial) AsSender() commander.Sender {
+	s := serialSender{}
 	s.bus = c
 	return s
 }

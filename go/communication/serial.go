@@ -40,17 +40,17 @@ func (s *shmeh) Read(b []byte) (n int, err error) {
 	return len(d), nil
 }
 
-//CAN bus
-type CAN struct {
+//Serial bus
+type Serial struct {
 	bus  io.ReadWriteCloser
 	lck  sync.Mutex
 	rch  *shmeh
 	scan *bufio.Scanner
 }
 
-//SetupCAN sets up a CAN bus
-func SetupCAN(port string) *CAN {
-	c := new(CAN)
+//SetupSerial sets up a CAN bus
+func SetupSerial(port string) *Serial {
+	c := new(Serial)
 	bus, err := goserial.OpenPort(&goserial.Config{
 		Name: port,
 		Baud: 115200,
@@ -77,7 +77,7 @@ func SetupCAN(port string) *CAN {
 }
 
 //SendMessage sends a message
-func (c *CAN) SendMessage(m Message) {
+func (c *Serial) SendMessage(m Message) {
 	c.lck.Lock()
 	defer c.lck.Unlock()
 	log.Println(m)
@@ -99,26 +99,26 @@ func (c *CAN) SendMessage(m Message) {
 type Message []byte
 
 //Args
-var canName string
+var serialName string
 
 //Bus is the main CAN bus
-var Bus *CAN
+var Bus *Serial
 
 //Sender is the CAN command sender
 var Sender commander.Sender
 
-//NoCAN says if CAN is disabled
-var NoCAN bool
+//NoSerial says if Serial is disabled
+var NoSerial bool
 
 func init() {
 	startup.NewTask(1, func() error { //Set up can flag parsing
-		flag.StringVar(&canName, "can", "/dev/ttyACM0", "Can bus arduino port (default: /dev/ttyACM0)")
-		flag.BoolVar(&NoCAN, "nocan", false, "Whether can is disabled")
+		flag.StringVar(&serialName, "ser", "/dev/ttyACM0", "Serial bus arduino port (default: /dev/ttyACM0)")
+		flag.BoolVar(&NoSerial, "noser", false, "Whether serial is disabled")
 		return nil
 	})
 	startup.NewTask(20, func() error {
-		if !NoCAN {
-			Bus = SetupCAN(canName)
+		if !NoSerial {
+			Bus = SetupSerial(serialName)
 			Sender = Bus.AsSender()
 		}
 		return nil
