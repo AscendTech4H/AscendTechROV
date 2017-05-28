@@ -25,7 +25,7 @@ gopath:
 	mkdir -p gopath/src/github.com/AscendTech4H/AscendTechROV
 
 godeps: gopath
-	go get github.com/blackjack/webcam github.com/brutella/can github.com/gorilla/websocket github.com/huin/goserial
+	go get github.com/blackjack/webcam github.com/gorilla/websocket github.com/huin/goserial
 
 makeall:
 	$(MAKE) -C ..
