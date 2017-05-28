@@ -1,5 +1,5 @@
-//Package can - a system to work with the can bus
-package can
+//Package communication - a system to work with the serial bus
+package communication
 
 import (
 	"bufio"

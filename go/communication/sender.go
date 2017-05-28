@@ -1,4 +1,4 @@
-package can
+package communication
 
 import (
 	"github.com/AscendTech4H/AscendTechROV/go/commander"

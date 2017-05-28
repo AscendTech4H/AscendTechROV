@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/AscendTech4H/AscendTechROV/go/can"
 	"github.com/AscendTech4H/AscendTechROV/go/commander"
+	"github.com/AscendTech4H/AscendTechROV/go/communication"
 	"github.com/AscendTech4H/AscendTechROV/go/controller"
 	"github.com/AscendTech4H/AscendTechROV/go/debug"
 	"github.com/AscendTech4H/AscendTechROV/go/motor"
@@ -40,21 +40,21 @@ const (
 
 func init() {
 	startup.NewTask(150, func() error {
-		robot.left = cmdmotor.Motor(can.Sender, motorl, motor.DC)
-		robot.right = cmdmotor.Motor(can.Sender, motorr, motor.DC)
+		robot.left = cmdmotor.Motor(communication.Sender, motorl, motor.DC)
+		robot.right = cmdmotor.Motor(communication.Sender, motorr, motor.DC)
 
-		robot.topfront = cmdmotor.Motor(can.Sender, motortf, motor.DC)
-		robot.topback = cmdmotor.Motor(can.Sender, motortb, motor.DC)
+		robot.topfront = cmdmotor.Motor(communication.Sender, motortf, motor.DC)
+		robot.topback = cmdmotor.Motor(communication.Sender, motortb, motor.DC)
 
-		robot.claw.roll = cmdmotor.Motor(can.Sender, motorroll, motor.DC)
-		robot.claw.grab = cmdmotor.Motor(can.Sender, motorgrab, motor.Servo)
+		robot.claw.roll = cmdmotor.Motor(communication.Sender, motorroll, motor.DC)
+		robot.claw.grab = cmdmotor.Motor(communication.Sender, motorgrab, motor.Servo)
 		return nil
 	})
 	startup.NewTask(253, func() error {
 		f, err := os.Create("debug.log")
 		util.UhOh(err)
 		q := log.New(f, "meme", 0)
-		if can.Sender != nil {
+		if communication.Sender != nil {
 			tick := time.NewTicker(time.Second / 5)
 			go func() {
 				for range tick.C {
@@ -102,7 +102,7 @@ func init() {
 					} else {
 						robot.claw.grab.Set(180)
 					}
-					can.Bus.AsSender().Send(commander.SetLaser(rob.Laser))
+					communication.Bus.AsSender().Send(commander.SetLaser(rob.Laser))
 					q.Println([]uint8{robot.left.State(), robot.right.State(), robot.topback.State(), robot.topfront.State(), robot.claw.grab.State(), robot.claw.roll.State()})
 				}
 			}()
