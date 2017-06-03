@@ -1,10 +1,6 @@
 language: c
 go:
     - 1.7.x
-addons:
-  apt:
-    packages:
-    - avr-libc
 install:
   - echo "Installing stuff. . . "
   - echo "Setting Go environment variables. . ."
