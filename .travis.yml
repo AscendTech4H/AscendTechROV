@@ -1,17 +1,11 @@
 language: go
 go:
     - 1.7.x
-install:
-  - echo "Installing stuff. . . "
-  - echo "Setting Go environment variables. . ."
+script:
   - export GOPATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace:$GOPATH"
   - export PATH="${TRAVIS_BUILD_DIR}/Godeps/_workspace/bin:$PATH"
-  - echo "Done installing stuff. . ."
-script:
   - make
   - make clean
-after_success:
-  - curl --upload-file out/out.tar.xz https://transfer.sh/out.tar.xz
 notifications:
   email:
     on_success: change
