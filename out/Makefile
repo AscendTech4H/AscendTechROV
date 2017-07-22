@@ -18,7 +18,7 @@ clean:
 prepgo: loadgo godeps
 
 loadgo: gopath
-	ln -s $(shell pwd)/go $(GOPATH)/src/github.com/AscendTech4H/AscendTechROV/go
+	ln -s $(shell pwd)/../go $(GOPATH)/src/github.com/AscendTech4H/AscendTechROV/go
 
 gopath:
 	mkdir gopath
