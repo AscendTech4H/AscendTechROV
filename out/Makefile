@@ -1,4 +1,4 @@
-GOPATH = $(realpath .)/gopath
+GOPATH = $(shell pwd)/gopath
 
 all: topSide.o camrelay.o static
 
@@ -18,11 +18,11 @@ clean:
 prepgo: loadgo godeps
 
 loadgo: gopath
-	cp -r ../go gopath/src/github.com/AscendTech4H/AscendTechROV/go
+	ln -s $(shell pwd)/go $(GOPATH)/src/github.com/AscendTech4H/AscendTechROV/go
 
 gopath:
 	mkdir gopath
-	mkdir -p gopath/src/github.com/AscendTech4H/AscendTechROV
+	mkdir -p $(GOPATH)/src/github.com/AscendTech4H/AscendTechROV
 
 godeps: gopath
 	go get github.com/blackjack/webcam github.com/gorilla/websocket github.com/huin/goserial
