@@ -135,14 +135,8 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 }
 
 //RobotState gets robot control state
-func RobotState() (rob Robot) {
+func RobotState() Robot {
 	lck.RLock()         //Set a read lock
 	defer lck.RUnlock() //Unlock on exit
-	rob.Claw = r.Claw
-	rob.Forward = r.Forward
-	rob.Laser = r.Laser
-	rob.Turn = r.Turn
-	rob.Up = r.Up
-	rob.ClawTurn = r.ClawTurn
-	return
+	return r
 }
