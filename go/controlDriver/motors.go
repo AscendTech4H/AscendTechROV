@@ -4,7 +4,6 @@ package controlDriver
 import (
 	"log"
 	"math"
-	"os"
 	"time"
 
 	"github.com/AscendTech4H/AscendTechROV/go/commander"
@@ -14,7 +13,6 @@ import (
 	"github.com/AscendTech4H/AscendTechROV/go/motor"
 	"github.com/AscendTech4H/AscendTechROV/go/motor/cmdmotor"
 	"github.com/AscendTech4H/AscendTechROV/go/startup"
-	"github.com/AscendTech4H/AscendTechROV/go/util"
 )
 
 //Add more motors when I know which they are
@@ -51,9 +49,6 @@ func init() {
 		return nil
 	})
 	startup.NewTask(253, func() error {
-		f, err := os.Create("debug.log")
-		util.UhOh(err)
-		q := log.New(f, "meme", 0)
 		if communication.Sender != nil {
 			tick := time.NewTicker(time.Second / 5)
 			go func() {
@@ -62,8 +57,6 @@ func init() {
 					rob := controller.RobotState()
 					l, r := motorCalcFwd(rob.Forward, rob.Turn)
 					log.Println(l, r)
-					//a := uint8(rangeMap(r, -127, 127, 0, 255))
-					//b := uint8(rangeMap(l, -127, 127, 0, 255))
 					a := uint8(r)
 					b := uint8(l)
 					robot.right.Set(a)
@@ -103,7 +96,6 @@ func init() {
 						robot.claw.grab.Set(180)
 					}
 					communication.Bus.AsSender().Send(commander.SetLaser(rob.Laser))
-					q.Println([]uint8{robot.left.State(), robot.right.State(), robot.topback.State(), robot.topfront.State(), robot.claw.grab.State(), robot.claw.roll.State()})
 				}
 			}()
 		}
