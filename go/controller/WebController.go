@@ -76,8 +76,8 @@ const (
 
 //Robot contains the controller data
 type Robot struct {
-	Claw, Laser                       bool
-	Forward, Up, Tilt, Turn, ClawTurn int
+	Claw, Laser                 bool
+	Forward, Up, Turn, ClawTurn int
 }
 
 var r Robot
@@ -130,8 +130,6 @@ func websockhandler(writer http.ResponseWriter, requ *http.Request) {
 			r.ClawTurn = STOP
 		case '}':
 			r.ClawTurn = CW
-		case '!':
-			r.Tilt, err = strconv.Atoi(str[1:])
 		default:
 			log.Printf("Ignored unrecognized WebSocket command %s\n", str)
 		}

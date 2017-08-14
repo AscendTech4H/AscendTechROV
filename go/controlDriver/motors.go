@@ -65,20 +65,6 @@ func init() {
 						u := uint8(rangeMap(rob.Up, -50, 50, 0, 255))
 						robot.topback.Set(u)
 						robot.topfront.Set(u)
-					} else {
-						m := rangeMap(rob.Tilt, -90, 90, -255, 255)
-						a := m
-						if a < 0 {
-							a *= -1
-						}
-						var f, b uint8 = uint8(a), uint8(a)
-						if m > 0 {
-							b = 255 - b
-						} else {
-							f = 255 - f
-						}
-						robot.topfront.Set(f)
-						robot.topback.Set(b)
 					}
 					c := uint8(0)
 					switch rob.ClawTurn {
