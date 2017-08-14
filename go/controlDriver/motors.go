@@ -61,11 +61,9 @@ func init() {
 					b := uint8(l)
 					robot.right.Set(a)
 					robot.left.Set(b)
-					if rob.Tilt == 0 {
-						u := uint8(rangeMap(rob.Up, -50, 50, 0, 255))
-						robot.topback.Set(u)
-						robot.topfront.Set(u)
-					}
+					u := uint8(rangeMap(rob.Up, -50, 50, 0, 255))
+					robot.topback.Set(u)
+					robot.topfront.Set(u)
 					c := uint8(0)
 					switch rob.ClawTurn {
 					case controller.CCW:
