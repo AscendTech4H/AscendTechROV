@@ -2,6 +2,7 @@
 package controller
 
 import (
+	"flag"
 	"log"
 	"net/http"
 	"strconv"
@@ -21,10 +22,16 @@ func init() {
 		http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 		return nil
 	})
+	//web server port as argument
+	var web string
+	startup.NewTask(1, func() error {
+		flag.StringVar(&web, "http", ":8080", "HTTP server host")
+		return nil
+	})
 	//Web server startup last
 	startup.NewTask(254, func() error {
 		log.Println("Starting web controller. . .")
-		go http.ListenAndServe(":8080", nil)
+		go http.ListenAndServe(web, nil)
 		return nil
 	})
 	lck = new(sync.RWMutex)
