@@ -1,6 +1,8 @@
 GOPATH = $(shell pwd)/gopath
+BINARIES = topSide camRelay
+GODEPS = github.com/blackjack/webcam github.com/gorilla/websocket github.com/huin/goserial
 
-all: topSide camRelay static
+all: $(BINARIES) static
 
 topSide: prepgo
 	go build -v -o topSide github.com/AscendTech4H/AscendTechROV/go/main
@@ -16,7 +18,7 @@ static:
 	rm static/Makefile static/.gitignore
 
 clean:
-	rm -rf topSide static camRelay gopath
+	rm -rf static gopath $(BINARIES)
 
 prepgo: loadgo godeps
 
@@ -31,7 +33,7 @@ gopath:
 	mkdir -p $(GOPATH)/src/github.com/AscendTech4H/AscendTechROV
 
 godeps: gopath
-	go get github.com/blackjack/webcam github.com/gorilla/websocket github.com/huin/goserial
+	go get $(GODEPS)
 
 makeall:
 	$(MAKE) -C ..
