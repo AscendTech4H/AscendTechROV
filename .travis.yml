@@ -2,8 +2,7 @@ language: go
 go:
     - 1.7.x
 script:
-  - make
-  - make clean
+  - make ci
 notifications:
   email:
     on_success: change
