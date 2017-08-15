@@ -1,12 +1,12 @@
 GOPATH = $(shell pwd)/gopath
 
-all: topSide.o camrelay.o static
+all: topSide camRelay static
 
-topSide.o: prepgo
-	go build -v -o topSide.o github.com/AscendTech4H/AscendTechROV/go/main
+topSide: prepgo
+	go build -v -o topSide github.com/AscendTech4H/AscendTechROV/go/main
 
-camrelay.o: prepgo
-	go build -v -o camrelay.o github.com/AscendTech4H/AscendTechROV/go/camrelay
+camRelay: prepgo
+	go build -v -o camRelay github.com/AscendTech4H/AscendTechROV/go/camrelay
 
 gotest: prepgo
 	go test github.com/AscendTech4H/AscendTechROV/go/controlDriver
