@@ -16,7 +16,7 @@ static:
 	rm static/Makefile static/.gitignore
 
 clean:
-	rm -rf topSide.o static camrelay.o gopath
+	rm -rf topSide static camRelay gopath
 
 prepgo: loadgo godeps
 
