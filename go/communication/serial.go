@@ -81,11 +81,6 @@ func (c *Serial) SendMessage(m Message) {
 	c.lck.Lock()
 	defer c.lck.Unlock()
 	log.Println(m)
-	/*s := ""
-	for _, v := range m {
-		s += fmt.Sprintln(uint(v) + 1)
-	}
-	log.Println(s)*/
 	_, err := c.bus.Write([]byte(m))
 	util.UhOh(err)
 	for i := 0; i < len(m); i++ {
@@ -101,10 +96,10 @@ type Message []byte
 //Args
 var serialName string
 
-//Bus is the main CAN bus
+//Bus is the main serial Bus
 var Bus *Serial
 
-//Sender is the CAN command sender
+//Sender is the command sender
 var Sender commander.Sender
 
 //NoSerial says if Serial is disabled
