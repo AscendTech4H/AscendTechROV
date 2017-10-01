@@ -1,14 +1,14 @@
 GOPATH = $(shell pwd)/gopath
-BINARIES = topSide camRelay
+BINARIES = topside.o camrelay.o
 GODEPS = github.com/blackjack/webcam github.com/gorilla/websocket github.com/huin/goserial
 
 all: $(BINARIES) static
 
-topSide: prepgo
-	go build -v -o topSide github.com/AscendTech4H/AscendTechROV/go/main
+topside.o: prepgo
+	go build -v -o topside.o github.com/AscendTech4H/AscendTechROV/go/main
 
-camRelay: prepgo
-	go build -v -o camRelay github.com/AscendTech4H/AscendTechROV/go/camrelay
+camrelay.o: prepgo
+	go build -v -o camrelay.o github.com/AscendTech4H/AscendTechROV/go/camrelay
 
 gotest: prepgo
 	go test github.com/AscendTech4H/AscendTechROV/go/controlDriver
