@@ -18,6 +18,7 @@ var tasks []*Task
 
 //NewTask allocates & initializes a Task
 //Time:
+//  1: Before parsing flags
 //	200-249: Setup for web interface
 //	250: Start web interface
 func NewTask(time uint8, task func() error) (t *Task) {
