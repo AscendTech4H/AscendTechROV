@@ -60,11 +60,16 @@ type RemoteCamera struct {
 	Address *url.URL
 }
 
+//Control contains the control settings for each direction
 type Control struct {
+	Directions []*Direction
 }
 
-type Vertical struct {
-	Motors []*MotAng
+//Direction is the control settings for a certain direciton
+type Direction struct {
+	Axis          int
+	Motors        []*MotAng
+	Stabilization *ArduinoAccel
 }
 
 //MotAng is a motor and an angle
