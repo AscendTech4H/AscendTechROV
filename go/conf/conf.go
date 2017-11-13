@@ -2,14 +2,56 @@ package conf
 
 import (
 	"net/url"
+	"strconv"
 
 	"../accelerometer"
 	"github.com/AscendTech4H/AscendTechROV/go/motor"
 	"github.com/AscendTech4H/bracketconf"
 )
 
+var dirProcessor bracketconf.DirectiveProcessor
+
+type valueList struct {
+	arr []interface{}
+}
+
+func (values *valueList) add(val string) {
+	//try converting to int or float, then append whatever you get
+	i, err := strconv.Atoi(val)
+	if err != nil {
+		f, err := strconv.ParseFloat(val, 64)
+		if err != nil {
+			values.arr = append(values.arr, val)
+		} else {
+			values.arr = append(values.arr, f)
+		}
+	} else {
+		values.arr = append(values.arr, i)
+	}
+}
+func (values *valueList) parseTree(n bracketconf.ASTNode) {
+	switch {
+	case n.IsDir():
+		fallthrough
+	case n.IsBracket():
+		n.Evaluate(values, dirProcessor)
+	case n.IsArr():
+		n.ForEach(func(_ int, v bracketconf.ASTNode) {
+			values.parseTree(v)
+		})
+	default:
+		values.add(n.Text())
+	}
+}
+
 func init() {
-	bracketconf.NewDirectiveProcessor()
+	arduinoMotorDirective := bracketconf.Directive{Name: "ardmotor", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+		values := valueList{}
+		for _, n := range ans {
+			values.parseTree(n)
+		}
+	}}
+	dirProcessor = bracketconf.NewDirectiveProcessor(arduinoMotorDirective)
 }
 
 //Robot is the thing
