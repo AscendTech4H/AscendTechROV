@@ -1,8 +1,8 @@
 package conf
 
 import (
+	"errors"
 	"net/url"
-	"strconv"
 
 	"../accelerometer"
 	"github.com/AscendTech4H/AscendTechROV/go/motor"
@@ -11,45 +11,35 @@ import (
 
 var dirProcessor bracketconf.DirectiveProcessor
 
-type valueList struct {
-	arr []interface{}
-}
-
-func (values *valueList) add(val string) {
-	//try converting to int or float, then append whatever you get
-	i, err := strconv.Atoi(val)
-	if err != nil {
-		f, err := strconv.ParseFloat(val, 64)
-		if err != nil {
-			values.arr = append(values.arr, val)
-		} else {
-			values.arr = append(values.arr, f)
-		}
-	} else {
-		values.arr = append(values.arr, i)
-	}
-}
-func (values *valueList) parseTree(n bracketconf.ASTNode) {
-	switch {
-	case n.IsDir():
-		fallthrough
-	case n.IsBracket():
-		n.Evaluate(values, dirProcessor)
-	case n.IsArr():
-		n.ForEach(func(_ int, v bracketconf.ASTNode) {
-			values.parseTree(v)
-		})
-	default:
-		values.add(n.Text())
-	}
-}
-
 func init() {
+	arduinoMotorDirectiveProcessor := bracketconf.NewDirectiveProcessor() //todo: add directives
 	arduinoMotorDirective := bracketconf.Directive{Name: "ardmotor", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
-		values := valueList{}
-		for _, n := range ans {
-			values.parseTree(n)
+		ard := object.(*Arduino)
+		switch len(ans) {
+		case 0:
+			panic(errors.New("Motor directive has no arguments"))
+		case 1:
+			if !ans[0].IsBracket() {
+			}
+			am := ArduinoMotor{}
+			ans[0].Evaluate(&am, arduinoMotorDirectiveProcessor)
+			ard.Motors = append(ard.Motors, &am)
+			return
+		case 5:
+			ard.Motors = append(ard.Motors, &ArduinoMotor{
+				Name:      ans[0].Text(),
+				Enable:    ans[1].Int(),
+				Direction: [2]int{ans[2].Int(), ans[3].Int()},
+				PWM:       ans[4].Int(),
+			})
+			return
 		}
+		for _, v := range ans {
+			if v.IsBracket() {
+				panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Invalid syntax: cannot mix bracket and non-bracket syntax for an arduino motor directive")})
+			}
+		}
+		panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Invalid non-bracket syntax: must have 5 arguments for non-bracket syntax")})
 	}}
 	dirProcessor = bracketconf.NewDirectiveProcessor(arduinoMotorDirective)
 }
