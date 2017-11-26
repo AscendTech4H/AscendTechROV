@@ -35,15 +35,7 @@ var arduinoMotorDirectionDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 	}},
 )
 var arduinoMotorDirectiveProcessor = bracketconf.NewDirectiveProcessor(
-	bracketconf.Directive{Name: "name", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
-		if len(ans) == 1 {
-			object.(*ArduinoMotor).Name = ans[0].Text()
-		} else if len(ans) == 0 {
-			panic(errors.New("Name directive has no arguments"))
-		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Name directive has too many arguments")})
-		}
-	}},
+	nameDirective,
 	bracketconf.Directive{Name: "enable", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 		if len(ans) == 1 {
 			object.(*ArduinoMotor).Enable = ans[0].Int()

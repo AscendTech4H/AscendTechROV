@@ -22,12 +22,6 @@ type Robot struct {
 	Startup []func(*Robot) error
 }
 
-//ArduinoAccel is an accelerometer configuration
-type ArduinoAccel struct {
-	Name string
-	Addr []byte
-}
-
 //LocalCamera is a camera attached to the local computer
 type LocalCamera struct {
 	Name    string

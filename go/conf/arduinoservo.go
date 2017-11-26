@@ -13,15 +13,7 @@ type ArduinoServo struct {
 }
 
 var arduinoServoDirectiveProcessor = bracketconf.NewDirectiveProcessor(
-	bracketconf.Directive{Name: "name", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
-		if len(ans) == 1 {
-			object.(*ArduinoServo).Name = ans[0].Text()
-		} else if len(ans) == 0 {
-			panic(errors.New("Name directive has no arguments"))
-		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Name directive has too many arguments")})
-		}
-	}},
+	nameDirective,
 	bracketconf.Directive{Name: "controlpin", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 		if len(ans) == 1 {
 			object.(*ArduinoServo).ControlPin = ans[0].Int()
