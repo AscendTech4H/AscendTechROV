@@ -11,7 +11,7 @@ import (
 var dirProcessor bracketconf.DirectiveProcessor
 
 func init() {
-	dirProcessor = arduinoMotorDirective
+	dirProcessor = bracketconf.NewDirectiveProcessor(arduinoDirective)
 }
 
 //Robot is the thing
@@ -20,28 +20,6 @@ type Robot struct {
 	Accel   map[string]accelerometer.Accel
 	Cameras map[string]interface{}
 	Startup []func(*Robot) error
-}
-
-//Arduino is an Arduino configuration
-type Arduino struct {
-	Serial       string
-	Motors       []*ArduinoMotor
-	Servos       []*ArduinoServo
-	ArduinoAccel []*ArduinoAccel
-}
-
-//ArduinoMotor is a set of pins for an Arduino motor
-type ArduinoMotor struct {
-	Name      string
-	Enable    int
-	Direction [2]int
-	PWM       int
-}
-
-//ArduinoServo is an Arduino servo pinout
-type ArduinoServo struct {
-	Name       string
-	ControlPin int
 }
 
 //ArduinoAccel is an accelerometer configuration
