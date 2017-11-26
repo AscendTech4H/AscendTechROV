@@ -12,7 +12,54 @@ import (
 var dirProcessor bracketconf.DirectiveProcessor
 
 func init() {
-	arduinoMotorDirectiveProcessor := bracketconf.NewDirectiveProcessor() //todo: add directives
+	arduinoMotorDirectionDirectiveProcessor := bracketconf.NewDirectiveProcessor(
+		bracketconf.Directive{Name: "x", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+			if len(ans) == 1 {
+				object.(*ArduinoMotor).Direction[0] = ans[0].Int()
+			} else {
+				panic(errors.New("X directive needs 1 argument"))
+			}
+		}},
+		bracketconf.Directive{Name: "y", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+			if len(ans) == 1 {
+				object.(*ArduinoMotor).Direction[1] = ans[0].Int()
+			} else {
+				panic(errors.New("Y directive needs 1 argument"))
+			}
+		}},
+	)
+	arduinoMotorDirectiveProcessor := bracketconf.NewDirectiveProcessor(
+		bracketconf.Directive{Name: "name", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+			if len(ans) == 1 {
+				object.(*ArduinoMotor).Name = ans[0].Text()
+			} else {
+				panic(errors.New("Name directive needs 1 argument"))
+			}
+		}},
+		bracketconf.Directive{Name: "enable", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+			if len(ans) == 1 {
+				object.(*ArduinoMotor).Enable = ans[0].Int()
+			} else {
+				panic(errors.New("Enable directive needs 1 argument"))
+			}
+		}},
+		bracketconf.Directive{Name: "pwm", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+			if len(ans) == 1 {
+				object.(*ArduinoMotor).PWM = ans[0].Int()
+			} else {
+				panic(errors.New("PWM directive needs 1 argument"))
+			}
+		}},
+		bracketconf.Directive{Name: "direction", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+			if len(ans) == 1 {
+				ans[0].Evaluate(object.(*ArduinoMotor), arduinoMotorDirectionDirectiveProcessor)
+			} else if len(ans) == 2 {
+				object.(*ArduinoMotor).Direction = [2]int{ans[0].Int(), ans[1].Int()}
+			} else {
+				panic(errors.New("Enable directive needs 1 bracket argument or 2 int arguments"))
+			}
+		}},
+	)
 	arduinoMotorDirective := bracketconf.Directive{Name: "ardmotor", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 		ard := object.(*Arduino)
 		switch len(ans) {
