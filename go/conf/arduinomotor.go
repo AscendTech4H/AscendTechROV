@@ -21,7 +21,7 @@ var arduinoMotorDirectionDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 		} else if len(ans) == 0 {
 			panic(errors.New("X directive has no arguments"))
 		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("X directive needs 1 argument")})
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("X directive has too many arguments")})
 		}
 	}},
 	bracketconf.Directive{Name: "y", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
@@ -30,7 +30,7 @@ var arduinoMotorDirectionDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 		} else if len(ans) == 0 {
 			panic(errors.New("Y directive has no arguments"))
 		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Y directive needs 1 argument")})
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Y directive has too many arguments")})
 		}
 	}},
 )
@@ -41,7 +41,7 @@ var arduinoMotorDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 		} else if len(ans) == 0 {
 			panic(errors.New("Name directive has no arguments"))
 		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Name directive needs 1 argument")})
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Name directive has too many arguments")})
 		}
 	}},
 	bracketconf.Directive{Name: "enable", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
@@ -50,7 +50,7 @@ var arduinoMotorDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 		} else if len(ans) == 0 {
 			panic(errors.New("Enable directive has no arguments"))
 		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Enable directive needs 1 argument")})
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Enable directive has too many arguments")})
 		}
 	}},
 	bracketconf.Directive{Name: "pwm", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
@@ -59,7 +59,7 @@ var arduinoMotorDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 		} else if len(ans) == 0 {
 			panic(errors.New("PWM directive has no arguments"))
 		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("PWM directive needs 1 argument")})
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("PWM directive has too many arguments")})
 		}
 	}},
 	bracketconf.Directive{Name: "direction", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
