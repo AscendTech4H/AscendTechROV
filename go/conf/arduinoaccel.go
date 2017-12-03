@@ -42,9 +42,13 @@ var arduinoAccelDirective = bracketconf.Directive{Name: "ardaccel", Callback: fu
 		ard.ArduinoAccel = append(ard.ArduinoAccel, &aa)
 		return
 	case 2:
+		i := ans[1].Int()
+		if i < 0 || i > 127 {
+			panic(bracketconf.ConfErr{Pos: ans[1].Position(), Err: errors.New("Address must be between 0 and 127 inclusive")})
+		}
 		ard.ArduinoAccel = append(ard.ArduinoAccel, &ArduinoAccel{
 			Name: ans[0].Text(),
-			//TODO: address
+			Addr: uint8(i)
 		})
 		return
 	}
