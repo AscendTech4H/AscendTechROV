@@ -37,11 +37,11 @@ func TestArduino(t *testing.T) {
       name b;
       addr 65;
     };
-	};`), "testing.conf", bracketconf.NewDirectiveProcessor(arduinoDirective), &ConfList{[]interface{}{}})
+	};`), "testing.conf", bracketconf.NewDirectiveProcessor(arduinoDirective), &FullList{[]interface{}{}})
 	if err != nil {
 		t.Fatal(err.Error())
 	}
-	dat, err := json.Marshal(tv.(*ConfList))
+	dat, err := json.Marshal(tv.(*FullList))
 	if err != nil {
 		t.Fatal(err.Error())
 	}
