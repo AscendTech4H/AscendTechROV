@@ -48,7 +48,7 @@ var arduinoAccelDirective = bracketconf.Directive{Name: "ardaccel", Callback: fu
 		}
 		ard.ArduinoAccel = append(ard.ArduinoAccel, &ArduinoAccel{
 			Name: ans[0].Text(),
-			Addr: uint8(i)
+			Addr: uint8(i),
 		})
 		return
 	}
