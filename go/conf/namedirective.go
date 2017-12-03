@@ -15,6 +15,10 @@ var nameDirective = bracketconf.Directive{Name: "name", Callback: func(object in
 			o.Name = ans[0].Text()
 		case *ArduinoAccel:
 			o.Name = ans[0].Text()
+		case *LocalCamera:
+			o.Name = ans[0].Text()
+		case *RemoteCamera:
+			o.Name = ans[0].Text()
 		}
 	} else if len(ans) == 0 {
 		panic(errors.New("Name directive has no arguments"))

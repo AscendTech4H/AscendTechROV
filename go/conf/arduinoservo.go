@@ -32,6 +32,7 @@ var arduinoServoDirective = bracketconf.Directive{Name: "ardservo", Callback: fu
 		panic(errors.New("Servo directive has no arguments"))
 	case 1:
 		if !ans[0].IsBracket() {
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Single servo argument must be a bracket")})
 		}
 		as := ArduinoServo{}
 		ans[0].Evaluate(&as, arduinoServoDirectiveProcessor)
