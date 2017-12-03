@@ -48,11 +48,6 @@ func TestArduino(t *testing.T) {
 		name b;
 		address "http://yahoo.com/";
 	};
-	motorangle asdf 0.5;
-	motorangle {
-		name abcd;
-		angle 0.65;
-	};
 	`), "testing.conf", bracketconf.NewDirectiveProcessor(arduinoDirective, localCameraDirective, remoteCameraDirective, motAngDirective), &FullList{[]interface{}{}})
 	if err != nil {
 		t.Fatal(err.Error())
@@ -61,7 +56,7 @@ func TestArduino(t *testing.T) {
 	if err != nil {
 		t.Fatal(err.Error())
 	}
-	if string(dat) != `{"Arr":[{"Serial":"","Motors":[{"Name":"a","Enable":2,"Direction":[3,4],"PWM":5},{"Name":"b","Enable":65,"Direction":[0,1],"PWM":52},{"Name":"c","Enable":65,"Direction":[2,3],"PWM":52}],"Servos":[{"Name":"a","ControlPin":4},{"Name":"b","ControlPin":3}],"ArduinoAccel":[{"Name":"a","Addr":2},{"Name":"b","Addr":65}]},{"Name":"a","DevFile":"asdf"},{"Name":"b","DevFile":"abc"},{"Name":"a","Address":{"Scheme":"http","Opaque":"","User":null,"Host":"google.com","Path":"/","RawPath":"","RawQuery":"","Fragment":""}},{"Name":"b","Address":{"Scheme":"http","Opaque":"","User":null,"Host":"yahoo.com","Path":"/","RawPath":"","RawQuery":"","Fragment":""}},{"Name":"asdf","Ang":0.5},{"Name":"abcd","Ang":0.65}]}` {
+	if string(dat) != `{"Arr":[{"Serial":"","Motors":[{"Name":"a","Enable":2,"Direction":[3,4],"PWM":5},{"Name":"b","Enable":65,"Direction":[0,1],"PWM":52},{"Name":"c","Enable":65,"Direction":[2,3],"PWM":52}],"Servos":[{"Name":"a","ControlPin":4},{"Name":"b","ControlPin":3}],"ArduinoAccel":[{"Name":"a","Addr":2},{"Name":"b","Addr":65}]},{"Name":"a","DevFile":"asdf"},{"Name":"b","DevFile":"abc"},{"Name":"a","Address":{"Scheme":"http","Opaque":"","User":null,"Host":"google.com","Path":"/","RawPath":"","RawQuery":"","Fragment":""}},{"Name":"b","Address":{"Scheme":"http","Opaque":"","User":null,"Host":"yahoo.com","Path":"/","RawPath":"","RawQuery":"","Fragment":""}}]}` {
 		t.Fatalf("Incorrect parse %s", string(dat))
 	}
 }

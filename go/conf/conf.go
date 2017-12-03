@@ -23,10 +23,3 @@ func (g *FullList) add(val interface{}) {
 type Control struct {
 	Directions []*Direction
 }
-
-//Direction is the control settings for a certain direciton
-type Direction struct {
-	Axis          int
-	Motors        []*MotAng
-	Stabilization *ArduinoAccel
-}

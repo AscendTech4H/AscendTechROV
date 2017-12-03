@@ -8,7 +8,7 @@ import (
 
 //MotAng is a motor and an angle
 type MotAng struct {
-	Name string //motor name
+	Name string //TODO: change to *ArduinoMotor
 	Ang  float64
 }
 
@@ -26,6 +26,7 @@ var motAngDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 )
 
 var motAngDirective = bracketconf.Directive{Name: "motorangle", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+	dir := object.(*Direction)
 	switch len(ans) {
 	case 0:
 		panic(errors.New("Motor angle directive has no arguments"))
@@ -35,10 +36,10 @@ var motAngDirective = bracketconf.Directive{Name: "motorangle", Callback: func(o
 		}
 		ma := MotAng{}
 		ans[0].Evaluate(&ma, motAngDirectiveProcessor)
-		object.(*FullList).add(ma)
+		dir.Motors = append(dir.Motors, ma)
 		return
 	case 2:
-		object.(*FullList).add(MotAng{
+		dir.Motors = append(dir.Motors, MotAng{
 			Name: ans[0].Text(),
 			Ang:  ans[1].Float(),
 		})
