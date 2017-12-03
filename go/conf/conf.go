@@ -30,9 +30,3 @@ type Direction struct {
 	Motors        []*MotAng
 	Stabilization *ArduinoAccel
 }
-
-//MotAng is a motor and an angle
-type MotAng struct {
-	Motor string
-	Ang   float64
-}

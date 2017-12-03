@@ -30,7 +30,7 @@ var remoteCameraDirectiveProcessor = bracketconf.NewDirectiveProcessor(
 	}},
 )
 
-var remoteCameraDirective = bracketconf.Directive{Name: "localcamera", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+var remoteCameraDirective = bracketconf.Directive{Name: "remotecamera", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 	switch len(ans) {
 	case 0:
 		panic(errors.New("Remote camera directive has no arguments"))
@@ -38,12 +38,12 @@ var remoteCameraDirective = bracketconf.Directive{Name: "localcamera", Callback:
 		if !ans[0].IsBracket() {
 			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Single remote cam argument must be a bracket")})
 		}
-		lc := LocalCamera{}
-		ans[0].Evaluate(&lc, localCameraDirectiveProcessor)
+		lc := RemoteCamera{}
+		ans[0].Evaluate(&lc, remoteCameraDirectiveProcessor)
 		object.(*FullList).add(lc)
 		return
 	case 2:
-		u, err := url.Parse(ans[0].Text())
+		u, err := url.Parse(ans[1].Text()) //TODO: does this even work
 		if err != nil {
 			panic(bracketconf.ConfErr{Pos: ans[1].Position(), Err: errors.New("URL given is not valid")})
 		}
