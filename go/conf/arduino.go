@@ -25,18 +25,22 @@ var arduinoSerialDirective = bracketconf.Directive{Name: "serial", Callback: fun
 var arduinoDirective = bracketconf.Directive{Name: "arduino", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 	if len(ans) == 1 && ans[0].IsBracket() {
 		ard := Arduino{}
-		ans[0].Evaluate(ard, bracketconf.NewDirectiveProcessor(
+		ans[0].Evaluate(&ard, bracketconf.NewDirectiveProcessor(
 			arduinoSerialDirective,
 			arduinoMotorDirective,
 			arduinoServoDirective,
+			arduinoAccelDirective,
 		))
+		object.(*ConfList).add(ard)
 	} else if len(ans) == 2 && !ans[0].IsBracket() && ans[1].IsBracket() {
 		ard := Arduino{}
 		ard.Serial = ans[0].Text()
-		ans[1].Evaluate(ard, bracketconf.NewDirectiveProcessor(
+		ans[1].Evaluate(&ard, bracketconf.NewDirectiveProcessor(
 			arduinoMotorDirective,
 			arduinoServoDirective,
+			arduinoAccelDirective,
 		))
+		object.(*ConfList).add(ard)
 	} else {
 		panic(errors.New("Arduino directive needs 1 bracket argument or a string argument and a bracket argument"))
 	}

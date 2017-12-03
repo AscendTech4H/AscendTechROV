@@ -38,7 +38,7 @@ var arduinoAccelDirective = bracketconf.Directive{Name: "ardaccel", Callback: fu
 		if !ans[0].IsBracket() {
 		}
 		aa := ArduinoAccel{}
-		ans[0].Evaluate(&aa, arduinoMotorDirectiveProcessor)
+		ans[0].Evaluate(&aa, arduinoAccelDirectiveProcessor)
 		ard.ArduinoAccel = append(ard.ArduinoAccel, &aa)
 		return
 	case 2:

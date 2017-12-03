@@ -34,7 +34,7 @@ var arduinoServoDirective = bracketconf.Directive{Name: "ardservo", Callback: fu
 		if !ans[0].IsBracket() {
 		}
 		as := ArduinoServo{}
-		ans[0].Evaluate(&as, arduinoMotorDirectiveProcessor)
+		ans[0].Evaluate(&as, arduinoServoDirectiveProcessor)
 		ard.Servos = append(ard.Servos, &as)
 		return
 	case 2:

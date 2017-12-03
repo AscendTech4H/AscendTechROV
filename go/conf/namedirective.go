@@ -10,8 +10,10 @@ var nameDirective = bracketconf.Directive{Name: "name", Callback: func(object in
 	if len(ans) == 1 {
 		switch o := object.(type) {
 		case *ArduinoMotor:
+			o.Name = ans[0].Text()
 		case *ArduinoServo:
-		case *ArduinoAccel: //to add more possible classes to name, add them at the end of this "case" chain
+			o.Name = ans[0].Text()
+		case *ArduinoAccel:
 			o.Name = ans[0].Text()
 		}
 	} else if len(ans) == 0 {
