@@ -15,22 +15,22 @@ type ArduinoMotor struct {
 }
 
 var arduinoMotorDirectionDirectiveProcessor = bracketconf.NewDirectiveProcessor(
-	bracketconf.Directive{Name: "x", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+	bracketconf.Directive{Name: "cw", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 		if len(ans) == 1 {
 			object.(*ArduinoMotor).Direction[0] = ans[0].Int()
 		} else if len(ans) == 0 {
-			panic(errors.New("X directive has no arguments"))
+			panic(errors.New("cw directive has no arguments"))
 		} else {
 			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("X directive has too many arguments")})
 		}
 	}},
-	bracketconf.Directive{Name: "y", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
+	bracketconf.Directive{Name: "ccw", Callback: func(object interface{}, ans ...bracketconf.ASTNode) {
 		if len(ans) == 1 {
 			object.(*ArduinoMotor).Direction[1] = ans[0].Int()
 		} else if len(ans) == 0 {
-			panic(errors.New("Y directive has no arguments"))
+			panic(errors.New("ccw directive has no arguments"))
 		} else {
-			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("Y directive has too many arguments")})
+			panic(bracketconf.ConfErr{Pos: ans[0].Position(), Err: errors.New("ccw directive has too many arguments")})
 		}
 	}},
 )
