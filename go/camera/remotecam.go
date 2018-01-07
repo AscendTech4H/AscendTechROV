@@ -10,8 +10,9 @@ import (
 
 //Remote is a remote camera
 type Remote struct {
-	lck  sync.RWMutex
-	targ string
+	lck    sync.RWMutex
+	targ   string
+	client *http.Client
 }
 
 //GetFrameJPEG returns an io.ReadCloser with a frame in JPEG format
@@ -21,7 +22,7 @@ func (r *Remote) GetFrameJPEG() (io.ReadCloser, error) {
 	if r.targ == "" {
 		return nil, errors.New("camera closed")
 	}
-	g, err := http.Get(r.targ)
+	g, err := r.client.Get(r.targ)
 	if err != nil {
 		return nil, err
 	}
@@ -40,6 +41,6 @@ func (r *Remote) Close() error {
 }
 
 //NewRemoteCam creates a new Remote object
-func NewRemoteCam(u *url.URL) *Remote {
-	return &Remote{targ: u.String()}
+func NewRemoteCam(u *url.URL, cli *http.Client) *Remote {
+	return &Remote{targ: u.String(), client: cli}
 }
