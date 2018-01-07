@@ -16,6 +16,7 @@ type Local struct {
 	toclose  bool
 	closed   bool
 	lck      sync.RWMutex
+	done     sync.RWMutex
 }
 
 type meh struct {
@@ -26,8 +27,30 @@ func (m meh) Close() error {
 	return nil
 }
 
+//GetFrameJPEG returns an io.ReadCloser with a frame in JPEG format
 func (l *Local) GetFrameJPEG() (io.ReadCloser, error) {
+	l.lck.RLock()
+	l.done.RLock()
+	defer l.lck.RUnlock()
+	defer l.done.RUnlock()
+	if l.closed {
+		return nil, errors.New("camera closed")
+	}
 	return meh{bytes.NewBuffer(l.curframe)}, nil
+}
+
+//Close a camera.Local
+func (l *Local) Close() error {
+	if l.closed {
+		return nil
+	}
+	l.toclose = true
+	l.done.Lock()
+	l.done.Unlock()
+	if !l.closed {
+		return errors.New("Not closed????")
+	}
+	return nil
 }
 
 func fourcc(str string) webcam.PixelFormat {
@@ -95,7 +118,9 @@ func NewLocalCam(path string) (*Local, error) {
 	if err != nil {
 		panic(err)
 	}
+	l.done.Lock()
 	go func() {
+		defer l.done.Unlock()
 		for !l.toclose {
 			err := w.WaitForFrame(1)
 			if err != nil {

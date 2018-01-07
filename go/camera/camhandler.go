@@ -26,7 +26,7 @@ func (c CamHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//send frame
 	_, err = io.Copy(w, fr)
 	if err != nil {
-		http.Error(w, "Relaying error "+err.Error(), http.StatusTeapot)
+		http.Error(w, "Relaying error "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
