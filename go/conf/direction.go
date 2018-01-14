@@ -6,13 +6,11 @@ import (
 	"github.com/AscendTech4H/bracketconf"
 )
 
+//Axis constants
 const (
-	//XDirection is the X axis
 	XDirection = iota
-	//YDirection is the Y axis
-	YDirection = iota
-	//ZDirection is the Z axis
-	ZDirection = iota
+	YDirection
+	ZDirection
 )
 
 //Direction is the control settings for a certain direciton

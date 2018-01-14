@@ -11,32 +11,32 @@ import (
 func TestArduino(t *testing.T) {
 	tv, err := bracketconf.Parse(strings.NewReader(`
 	arduino {
-    ardmotor a 2 3 4 5;
-    ardmotor {
-      name b;
-      enable 65;
-      direction {
-        cw 6;
-        ccw 7;
-      };
-      pwm 52;
-    };
-    ardmotor {
-      name c;
-      enable 65;
-      pwm 52;
-      direction 2 3;
-    };
-    ardservo a 4;
-    ardservo {
-      name b;
-      controlpin 3;
-    };
-    ardaccel a 2;
-    ardaccel {
-      name b;
-      addr 65;
-    };
+    	ardmotor a 2 3 4 5;
+    	ardmotor {
+			name b;
+			enable 65;
+			direction {
+				cw 6;
+				ccw 7;
+			};
+			pwm 52;
+    	};
+    	ardmotor {
+    		name c;
+    		enable 65;
+    		pwm 52;
+    		direction 2 3;
+    	};
+    	ardservo a 4;
+    	ardservo {
+    		name b;
+    		controlpin 3;
+    	};
+    	ardaccel a 2;
+    	ardaccel {
+    		name b;
+    		addr 65;
+    	};
 	};
 	localcamera a "/dev/video1";
 	localcamera {

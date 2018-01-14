@@ -8,7 +8,7 @@ import (
 
 //MotAng is a motor and an angle
 type MotAng struct {
-	Name string //TODO: change to *ArduinoMotor
+	Name string
 	Ang  float64
 }
 
